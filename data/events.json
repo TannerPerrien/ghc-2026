@@ -1,0 +1,132 @@
+[
+  {
+    "title": "Registration Desk Opens",
+    "locationSlug": "ohio",
+    "date": "2026-04-09",
+    "day": "Thursday",
+    "startTime": "13:30",
+    "endTime": null,
+    "room": null,
+    "description": null
+  },
+  {
+    "title": "Exhibit Hall Opens",
+    "locationSlug": "ohio",
+    "date": "2026-04-09",
+    "day": "Thursday",
+    "startTime": "17:00",
+    "endTime": null,
+    "room": null,
+    "description": null
+  },
+  {
+    "title": "Exhibit Hall & Registration Desk Closes",
+    "locationSlug": "ohio",
+    "date": "2026-04-09",
+    "day": "Thursday",
+    "startTime": "20:00",
+    "endTime": null,
+    "room": null,
+    "description": null
+  },
+  {
+    "title": "Family ​Movie ​Night featuring Daniel",
+    "locationSlug": "ohio",
+    "date": "2026-04-09",
+    "day": "Thursday",
+    "startTime": "20:00",
+    "endTime": "21:30",
+    "room": "Ballroom",
+    "description": "Sponsored by Sight & Sound- Included with A Full Family or Full Individual Registration"
+  },
+  {
+    "title": "Registration Desk Opens",
+    "locationSlug": "ohio",
+    "date": "2026-04-10",
+    "day": "Friday",
+    "startTime": "08:00",
+    "endTime": null,
+    "room": null,
+    "description": null
+  },
+  {
+    "title": "Exhibit Hall Opens",
+    "locationSlug": "ohio",
+    "date": "2026-04-10",
+    "day": "Friday",
+    "startTime": "09:30",
+    "endTime": null,
+    "room": null,
+    "description": null
+  },
+  {
+    "title": "Exhibit Hall & Registration Desk Close",
+    "locationSlug": "ohio",
+    "date": "2026-04-10",
+    "day": "Friday",
+    "startTime": "19:00",
+    "endTime": null,
+    "room": null,
+    "description": null
+  },
+  {
+    "title": "Special Event / - Friday Night Comedy with Jeff Allen",
+    "locationSlug": "ohio",
+    "date": "2026-04-10",
+    "day": "Friday",
+    "startTime": "19:30",
+    "endTime": "20:30",
+    "room": "Ballroom",
+    "description": "A Full Family or A Full Individual Registration is Required to Attend - Everyone Needs a Ticket"
+  },
+  {
+    "title": "Registration Desk Opens",
+    "locationSlug": "ohio",
+    "date": "2026-04-11",
+    "day": "Saturday",
+    "startTime": "08:00",
+    "endTime": null,
+    "room": null,
+    "description": null
+  },
+  {
+    "title": "Exhibit Hall Opens",
+    "locationSlug": "ohio",
+    "date": "2026-04-11",
+    "day": "Saturday",
+    "startTime": "09:30",
+    "endTime": null,
+    "room": null,
+    "description": null
+  },
+  {
+    "title": "Coffee and Cookies With Dads - A special event for dads, presented by Trail Life USA",
+    "locationSlug": "ohio",
+    "date": "2026-04-11",
+    "day": "Saturday",
+    "startTime": "09:30",
+    "endTime": "11:30",
+    "room": "Room 310",
+    "description": null
+  },
+  {
+    "title": "Memoria Press Podcast",
+    "locationSlug": "ohio",
+    "date": "2026-04-11",
+    "day": "Saturday",
+    "startTime": "16:00",
+    "endTime": "17:00",
+    "room": "Room 231",
+    "description": null
+  },
+  {
+    "title": "Exhibit Hall & Registration Desk Close",
+    "locationSlug": "ohio",
+    "date": "2026-04-11",
+    "day": "Saturday",
+    "startTime": "17:30",
+    "endTime": null,
+    "room": null,
+    "description": null
+  }
+]

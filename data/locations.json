@@ -1,0 +1,15 @@
+[
+  {
+    "slug": "ohio",
+    "name": "Ohio",
+    "abbreviation": "OH",
+    "venue": "First Financial Center",
+    "city": "Cincinnati",
+    "address": "525 Elm St, Cincinnati, OH 45202",
+    "dates": {
+      "start": "2026-04-09",
+      "end": "2026-04-11"
+    },
+    "year": 2026
+  }
+]

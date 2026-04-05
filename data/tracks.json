@@ -1,0 +1,42 @@
+[
+  {
+    "slug": "charlotte-mason",
+    "name": "Charlotte Mason Track"
+  },
+  {
+    "slug": "classical",
+    "name": "Classical Track"
+  },
+  {
+    "slug": "college",
+    "name": "College Track"
+  },
+  {
+    "slug": "homeschool-101",
+    "name": "Homeschool 101"
+  },
+  {
+    "slug": "homesteading-homeschooling",
+    "name": "Homesteading & Homeschooling"
+  },
+  {
+    "slug": "neurodivergent-learning",
+    "name": "Neurodivergent Learning"
+  },
+  {
+    "slug": "parent-to-parent",
+    "name": "Parent-to-Parent Track"
+  },
+  {
+    "slug": "real-faith-teen",
+    "name": "Real Faith for the Real World Teen Track"
+  },
+  {
+    "slug": "special-needs",
+    "name": "Special Needs"
+  },
+  {
+    "slug": "teen",
+    "name": "Teen Track"
+  }
+]
