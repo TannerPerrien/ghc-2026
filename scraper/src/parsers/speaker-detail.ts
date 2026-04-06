@@ -1,5 +1,4 @@
 import * as cheerio from 'cheerio';
-import { Sponsor } from '../types';
 
 const STATE_TO_SLUG: Record<string, string> = {
   SC: 'south-carolina',
@@ -52,7 +51,6 @@ export interface SpeakerDetail {
   locationSlugs: string[];
   trackSlugs: string[];
   workshopSlugs: string[];
-  sponsor: Sponsor | null;
 }
 
 export function parseSpeakerDetail(html: string): SpeakerDetail {
@@ -75,13 +73,28 @@ export function parseSpeakerDetail(html: string): SpeakerDetail {
     if (rawText) title = rawText;
   }
 
-  // Website — link with fa-desktop icon, inside the p.mb-4 strong
+  // Website — link inside the p.mb-4 strong; fallback to the sponsor section link
   let website: string | null = null;
   metaP.find('a[href]').each((_, el) => {
     if (website) return;
     const href = $(el).attr('href') || '';
     if (href.startsWith('http')) website = href;
   });
+  if (!website) {
+    $('p').each((_, el) => {
+      if (website) return;
+      const $el = $(el);
+      if ($el.find('strong').text().trim().toLowerCase() === 'sponsor') {
+        $el.parent().find('a[href]').each((_, a) => {
+          if (website) return;
+          const href = $(a).attr('href') || '';
+          if (href.startsWith('http') && !href.includes('greathomeschoolconventions.com')) {
+            website = href;
+          }
+        });
+      }
+    });
+  }
 
   // Photo — the speaker portrait uses a Craft CMS crop transform
   // Match img with "_crop_center" in src (filters out logo images)
@@ -138,27 +151,6 @@ export function parseSpeakerDetail(html: string): SpeakerDetail {
     if (content) bio = content;
   });
 
-  // Sponsor — look for "Sponsor" label followed by a linked image
-  let sponsor: Sponsor | null = null;
-  $('p').each((_, el) => {
-    if (sponsor) return;
-    const $el = $(el);
-    if ($el.find('strong').text().trim().toLowerCase() === 'sponsor') {
-      // Sponsor link/image is typically in a following sibling or within the same section
-      const container = $el.parent();
-      container.find('a[href]').each((_, a) => {
-        if (sponsor) return;
-        const href = $(a).attr('href') || '';
-        const imgAlt = $(a).find('img').attr('alt') || '';
-        const linkText = $(a).text().trim();
-        const sponsorName = imgAlt || linkText;
-        if (sponsorName && href) {
-          sponsor = { name: sponsorName, url: href };
-        }
-      });
-    }
-  });
-
   return {
     name,
     title,
@@ -168,6 +160,5 @@ export function parseSpeakerDetail(html: string): SpeakerDetail {
     locationSlugs,
     trackSlugs,
     workshopSlugs,
-    sponsor,
   };
 }

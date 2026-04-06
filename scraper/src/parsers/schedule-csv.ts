@@ -232,6 +232,53 @@ function jaccardSimilarity(a: string, b: string): number {
   return union === 0 ? 1 : intersection / union;
 }
 
+// Maps normalized CSV title → workshop slug(s).
+// Used when the CSV title diverges from the API title enough to defeat fuzzy matching.
+const TITLE_OVERRIDES = new Map<string, string[]>([
+  ['charlotte mason excellence without sacrifice',
+    ['a-charlotte-mason-education-excellence-without-sacrifice']],
+  ['all the questions youre afraid to ask about marriage',
+    ['all-the-questions-youre-afraid-to-ask-about-marriage']],
+  // Same CSV row covers two co-speaker workshops with identical API titles:
+  ['anchoring on your why when times get tough',
+    [
+      'anchoring-on-your-why-when-times-get-tough-from-teaching-neurodivergent-students-to-lifes-difficult-seasons',
+      'anchoring-on-your-why-when-times-get-tough-from-teaching-neurodivergent-students-to-lifes-difficult-seasons-2',
+    ]],
+  ['behind the scenes of storytelling for 5 8 grade students',
+    ['behind-the-scenes-of-storytelling-designed-for-5th-8th-grade-students']],
+  ['beyond adhd symptoms strategies to treat the whole child',
+    ['beyond-adhd-symptoms-exploring-causes-understanding-holistic-treatments-and-mastering-learning-strategies-to-treat-the-whole-child']],
+  ['homeschooling twice exceptional children',
+    ['homeschooling-twice-exceptional-children']],
+  ['ez 1 iews step by step teaching method',
+    ['ez-1-the-iew-method-of-teaching']],
+  // API title has a typo ("Homescholing"), CSV spells it correctly:
+  ['five flavors of homeschooling',
+    ['five-flavors-of-homescholing']],
+  ['for those moments when you dont like your child but you still love them',
+    ['for-those-moments-when-you-dont-like-your-child-but-you-still-love-them']],
+  ['hacking high school and college',
+    ['hacking-high-school-and-college']],
+  ['ice cream with authors live a special podcast experience for families ice cream not included',
+    ['ice-cream-with-authors-live-a-special-podcast-experience-for-families-2']],
+  // API title has a typo ("Lauching"), CSV spells it correctly:
+  ['launching your homeschool journey success for the road',
+    ['lauching-your-homeschool-journey-success-for-the-road']],
+  ['martin and andrew reflect on great childrens literature',
+    ['andrew-and-martin-argue-about-good-and-great-books']],
+  ['foundational five bible stories fairy tales mother goose aesop mythology',
+    ['the-foundational-five-bible-stories-fairy-tales-mother-goose-aesops-fables-and-mythology']],
+  ['michael clay thompson language arts charlotte mason',
+    ['the-michael-clay-thompson-approach-to-english-language-arts-mastery']],
+  ['americas miraculous story evidence of gods hand',
+    ['the-miraculous-history-of-america-gods-hand-on-us']],
+  ['twelve great christian novels and why you should read them',
+    ['twelve-great-books-for-boys']],
+  ['we must raise ladies and gentlemen who live with honor',
+    ['we-must-raise-honorable-ladies-gentlemen']],
+]);
+
 export function matchWorkshopRows(
   workshopRows: ScheduleRow[],
   workshopsBySlug: Map<string, { id: string; slug: string; title: string }>
@@ -253,6 +300,21 @@ export function matchWorkshopRows(
 
   for (const row of workshopRows) {
     const normTitle = normalizeTitle(row.title);
+
+    // Check manual overrides first — handles renamed/shortened CSV titles
+    const overrideSlugs = TITLE_OVERRIDES.get(normTitle);
+    if (overrideSlugs) {
+      for (const s of overrideSlugs) {
+        matched.push({
+          slug: s,
+          entry: { date: row.date, day: row.day, startTime: row.startTime, endTime: row.endTime, room: row.room },
+          room: row.room,
+          speakerRaw: row.speakerRaw,
+        });
+      }
+      continue;
+    }
+
     let slug = titleToSlug.get(normTitle);
 
     // Fuzzy fallback: find best Jaccard match above threshold

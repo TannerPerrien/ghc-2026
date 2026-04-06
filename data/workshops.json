@@ -251,7 +251,15 @@
       "texas"
     ],
     "description": "<p>Learn the foundational tenets of a Charlotte Mason education and how to implement her methodology in your homeschool.<br></p>",
-    "schedule": {}
+    "schedule": {
+      "ohio": {
+        "date": "2026-04-10",
+        "day": "Friday",
+        "startTime": "13:00",
+        "endTime": "14:00",
+        "room": "Queen City A"
+      }
+    }
   },
   {
     "id": "461715",
@@ -367,7 +375,15 @@
       "texas"
     ],
     "description": null,
-    "schedule": {}
+    "schedule": {
+      "ohio": {
+        "date": "2026-04-11",
+        "day": "Saturday",
+        "startTime": "14:30",
+        "endTime": "15:30",
+        "room": "Cincinnatus A"
+      }
+    }
   },
   {
     "id": "875591",
@@ -383,15 +399,7 @@
       "texas"
     ],
     "description": null,
-    "schedule": {
-      "ohio": {
-        "date": "2026-04-11",
-        "day": "Saturday",
-        "startTime": "14:30",
-        "endTime": "15:30",
-        "room": "Cincinnatus A"
-      }
-    }
+    "schedule": {}
   },
   {
     "id": "898350",
@@ -404,15 +412,7 @@
       "ohio"
     ],
     "description": null,
-    "schedule": {
-      "ohio": {
-        "date": "2026-04-09",
-        "day": "Thursday",
-        "startTime": "17:30",
-        "endTime": "18:30",
-        "room": "Queen City D"
-      }
-    }
+    "schedule": {}
   },
   {
     "id": "418727",
@@ -450,7 +450,15 @@
       "ohio"
     ],
     "description": "<p>Homeschooling through difficult seasons can test even the most committed families. This workshop offers encouragement for parents teaching neurodivergent or special needs students, navigating busy schedules or family emergencies, and learning when to pause without quitting. Together we’ll refocus on your “why” and find renewed strength to continue the journey.</p>",
-    "schedule": {}
+    "schedule": {
+      "ohio": {
+        "date": "2026-04-11",
+        "day": "Saturday",
+        "startTime": "10:00",
+        "endTime": "11:00",
+        "room": "Queen City B"
+      }
+    }
   },
   {
     "id": "867191",
@@ -463,7 +471,15 @@
       "ohio"
     ],
     "description": "<p>Homeschooling through difficult seasons can test even the most committed families. This workshop offers encouragement for parents teaching neurodivergent or special needs students, navigating busy schedules or family emergencies, and learning when to pause without quitting. Together we’ll refocus on your “why” and find renewed strength to continue the journey.</p>",
-    "schedule": {}
+    "schedule": {
+      "ohio": {
+        "date": "2026-04-11",
+        "day": "Saturday",
+        "startTime": "10:00",
+        "endTime": "11:00",
+        "room": "Queen City B"
+      }
+    }
   },
   {
     "id": "895704",
@@ -662,7 +678,15 @@
       "ohio"
     ],
     "description": "<p>How can you take pieces of your real life—or things from your imagination—and create a story? Award-winning middle grade author Becca Wierwille shares her story creation process with young readers and encourages them to create stories from their own lives and imaginations. This presentation includes details about Becca’s story creation process, tips for students who want to create their own stories, a group writing exercise, an opportunity for young readers to workshop with each other and practice creating their own stories, and Q&amp;A time at the end.</p>",
-    "schedule": {}
+    "schedule": {
+      "ohio": {
+        "date": "2026-04-09",
+        "day": "Thursday",
+        "startTime": "14:30",
+        "endTime": "15:30",
+        "room": "Room 231"
+      }
+    }
   },
   {
     "id": "554687",
@@ -679,7 +703,15 @@
       "texas"
     ],
     "description": "<p>Have you always wanted to improve your child’s ability to follow multiple step<br>instructions, read more fluently, or grasp those tricky math word problems? Have you wondered if there are<br>things you can do as the teacher to improve your child’s progress? The field of neuroscience has given us an<br>immense amount of information on how the brain learns and provides a roadmap of how to teach<br>considering brain function to optimize learning. Take away easy-to-implement actionable steps that are<br>quick and affordable but can make a huge impact in your homeschool classroom.<br>Participants will learn:<br>~What neuroplasticity is<br>~The definition of the 7 core cognitive skills and how these impact learning and teaching<br>~How to identify cognitive weaknesses in your students<br>~Classroom activities to support cognitive development<br></p>",
-    "schedule": {}
+    "schedule": {
+      "ohio": {
+        "date": "2026-04-11",
+        "day": "Saturday",
+        "startTime": "16:00",
+        "endTime": "17:00",
+        "room": "Room 230 DEF"
+      }
+    }
   },
   {
     "id": "895766",
@@ -1534,7 +1566,15 @@
       "california"
     ],
     "description": "<p>Twice-exceptional children are those who are gifted and have another exceptionality such as OCD or being on the spectrum; there are many strategies for helping these children become highly productive adults.</p>",
-    "schedule": {}
+    "schedule": {
+      "ohio": {
+        "date": "2026-04-11",
+        "day": "Saturday",
+        "startTime": "08:30",
+        "endTime": "09:30",
+        "room": "Room 230 ABC"
+      }
+    }
   },
   {
     "id": "756450",
@@ -1680,7 +1720,15 @@
       "texas"
     ],
     "description": null,
-    "schedule": {}
+    "schedule": {
+      "ohio": {
+        "date": "2026-04-10",
+        "day": "Friday",
+        "startTime": "14:30",
+        "endTime": "15:30",
+        "room": "Room 201 ABC"
+      }
+    }
   },
   {
     "id": "896857",
@@ -1850,7 +1898,15 @@
       "ohio"
     ],
     "description": "<table dir=\"ltr\"><tbody><tr><td rowspan=\"1\" colspan=\"12\">The world of homeschooling is a lot like the world of food. You know that you want to provide nutritious meals for your children’s minds, but there are so many possibilities for what that food could look like and taste like. Join Sonya for a simple overview of five main flavors of homeschooling: traditional, classical, Charlotte Mason, unit studies, unschooling. Find your preferred flavor and learn how to shop for a successful homeschool menu.</td></tr></tbody></table>",
-    "schedule": {}
+    "schedule": {
+      "ohio": {
+        "date": "2026-04-09",
+        "day": "Thursday",
+        "startTime": "17:30",
+        "endTime": "18:30",
+        "room": "Room 201D"
+      }
+    }
   },
   {
     "id": "855606",
@@ -1892,7 +1948,15 @@
       "texas"
     ],
     "description": "<p>No one wants to admit it, but most every parent has that moment (or moments) where they're having a difficult time liking their child. It usually has something to do with the destruction of your personal property, or a recurring character flaw (like dishonesty), or the fact that you both have personality traits that are uncomfortably similar. Whatever the cause, left unchecked these feelings can grow into something much stronger than mere \"dislike\". In this talk we'll explore the root cause of these feelings and offer some practical advice to help you avoid the situations that bring them about.<br><br></p>",
-    "schedule": {}
+    "schedule": {
+      "ohio": {
+        "date": "2026-04-10",
+        "day": "Friday",
+        "startTime": "10:00",
+        "endTime": "11:00",
+        "room": "Room 230 ABC"
+      }
+    }
   },
   {
     "id": "892510",
@@ -1907,15 +1971,7 @@
       "texas"
     ],
     "description": null,
-    "schedule": {
-      "ohio": {
-        "date": "2026-04-10",
-        "day": "Friday",
-        "startTime": "10:00",
-        "endTime": "11:00",
-        "room": "Room 230 ABC"
-      }
-    }
+    "schedule": {}
   },
   {
     "id": "892502",
@@ -2277,7 +2333,15 @@
       "ohio"
     ],
     "description": "<p><strong>Andrew Pudewa &amp; Nicholas Ellis  (IEW &amp; Christian Halls International)</strong></p>",
-    "schedule": {}
+    "schedule": {
+      "ohio": {
+        "date": "2026-04-11",
+        "day": "Saturday",
+        "startTime": "13:00",
+        "endTime": "14:00",
+        "room": "Cincinnatus B"
+      }
+    }
   },
   {
     "id": "898118",
@@ -2290,15 +2354,7 @@
       "ohio"
     ],
     "description": "<p>Andrew Pudewa &amp; Nicholas Ellis  (IEW &amp; Christian Halls International)</p>",
-    "schedule": {
-      "ohio": {
-        "date": "2026-04-11",
-        "day": "Saturday",
-        "startTime": "13:00",
-        "endTime": "14:00",
-        "room": "Cincinnatus B"
-      }
-    }
+    "schedule": {}
   },
   {
     "id": "858735",
@@ -3096,15 +3152,7 @@
       "ohio"
     ],
     "description": "<table dir=\"ltr\"><tbody><tr><td rowspan=\"1\" colspan=\"12\">Join award-winning Christian middle grade authors Becca Wierwille and Amanda Trumpower, the hosts of Ice Cream with Authors, a Christian book podcast for kids. We’re hosting a one-of-a-kind live episode right from the convention!<br><br>You'll be part of a live studio audience as we interview a surprise guest who writes faith-filled, family-friendly stories. Your kids will love the chance to see a real podcast recording in action, ask questions, and participate in storytelling games.<br><br>Why attend? Because it’s more than just listening to a podcast—it's an interactive, engaging event that focuses on finding good Christian literature that aligns with traditional values. Your family will leave inspired and encouraged. Plus, the episode we record will later air on our show, so you might just hear yourself on Ice Cream with Authors!<br><br>Come for the stories, stay for the fellowship, and leave with a little more sweetness in your homeschool journey. We can’t wait to see you there! (Ice cream not included.)</td></tr></tbody></table>",
-    "schedule": {
-      "ohio": {
-        "date": "2026-04-10",
-        "day": "Friday",
-        "startTime": "10:00",
-        "endTime": "11:00",
-        "room": "Room 211AB"
-      }
-    }
+    "schedule": {}
   },
   {
     "id": "890516",
@@ -3117,7 +3165,15 @@
       "ohio"
     ],
     "description": "<table dir=\"ltr\"><tbody><tr><td rowspan=\"1\" colspan=\"12\">Join award-winning Christian middle grade authors Becca Wierwille and Amanda Trumpower, the hosts of Ice Cream with Authors, a Christian book podcast for kids. We’re hosting a one-of-a-kind live episode right from the convention!<br><br>You'll be part of a live studio audience as we interview a surprise guest who writes faith-filled, family-friendly stories. Your kids will love the chance to see a real podcast recording in action, ask questions, and participate in storytelling games.<br><br>Why attend? Because it’s more than just listening to a podcast—it's an interactive, engaging event that focuses on finding good Christian literature that aligns with traditional values. Your family will leave inspired and encouraged. Plus, the episode we record will later air on our show, so you might just hear yourself on Ice Cream with Authors!<br><br>Come for the stories, stay for the fellowship, and leave with a little more sweetness in your homeschool journey. We can’t wait to see you there!&nbsp;(Ice cream not included.)</td></tr></tbody></table>",
-    "schedule": {}
+    "schedule": {
+      "ohio": {
+        "date": "2026-04-10",
+        "day": "Friday",
+        "startTime": "10:00",
+        "endTime": "11:00",
+        "room": "Room 211AB"
+      }
+    }
   },
   {
     "id": "860486",
@@ -3248,7 +3304,15 @@
       "texas"
     ],
     "description": "<p>Homeschooling is a journey as unique as each family that embraces it. Whether you're just starting to explore this educational path or you're a seasoned veteran, there's always an opportunity to learn, grow,and refine your approach. Join Gretchen Roe for an inspiring presentation filled with invaluable, practical tips and essential tools. This session is designed to empower every family, regardless of their experience level, to navigate the challenges, celebrate the triumphs, and discover lasting joy, efficiency, and success in their unique homeschooling environment.  </p>",
-    "schedule": {}
+    "schedule": {
+      "ohio": {
+        "date": "2026-04-09",
+        "day": "Thursday",
+        "startTime": "16:00",
+        "endTime": "17:00",
+        "room": "Room 230 ABC"
+      }
+    }
   },
   {
     "id": "887142",
@@ -3572,7 +3636,15 @@
       "texas"
     ],
     "description": "<p>Join Andrew Pudewa and Martin Cothran for a delightful romp through fifteen of the best Children’s books for young, middle, and older students (or yourself!).   </p>",
-    "schedule": {}
+    "schedule": {
+      "ohio": {
+        "date": "2026-04-10",
+        "day": "Friday",
+        "startTime": "13:00",
+        "endTime": "14:00",
+        "room": "Cincinnatus B"
+      }
+    }
   },
   {
     "id": "580742",
@@ -3589,15 +3661,7 @@
       "missouri"
     ],
     "description": "<p>Join Andrew Pudewa and Martin Cothran for a delightful romp through fifteen of the best Children’s books for young, middle, and older students (or yourself!).   </p>",
-    "schedule": {
-      "ohio": {
-        "date": "2026-04-10",
-        "day": "Friday",
-        "startTime": "13:00",
-        "endTime": "14:00",
-        "room": "Cincinnatus B"
-      }
-    }
+    "schedule": {}
   },
   {
     "id": "288546",
@@ -5498,7 +5562,15 @@
       "texas"
     ],
     "description": "<p>David and his five smooth stones, Cinderella and her glass slipper, Mary and her lamb, the tortoise and the hare, and dynamite are only a few examples of how these five collections of tales have influenced our literature, our language, and our lives. Learning the prime stories gathered in these sources equips your students to enjoy a lifetime of reading and getting the most out of the allusions, metaphors, and subtle remarks mined from the great classics.</p>",
-    "schedule": {}
+    "schedule": {
+      "ohio": {
+        "date": "2026-04-11",
+        "day": "Saturday",
+        "startTime": "08:30",
+        "endTime": "09:30",
+        "room": "Queen City C"
+      }
+    }
   },
   {
     "id": "856873",
@@ -5583,7 +5655,15 @@
       "california"
     ],
     "description": "<p>For more than 40 years Michael Clay Thompson has been developing an unique approach to teaching language arts in ways that children grasp quickly and enthusiastically and remember fondly forever after.  His methods—based on the classics—will make your child the most outstanding student in university classes.<br></p>",
-    "schedule": {}
+    "schedule": {
+      "ohio": {
+        "date": "2026-04-10",
+        "day": "Friday",
+        "startTime": "11:30",
+        "endTime": "12:30",
+        "room": "Room 230 DEF"
+      }
+    }
   },
   {
     "id": "856917",
@@ -5625,7 +5705,15 @@
       "texas"
     ],
     "description": "<p>Understanding God’s role in the foundation of America is vitally important to maintaining freedom. It’s something our founders knew and relied on, and is often the missing ingredient in our modern-day fight for liberty. This message is not only enlightening but incredibly empowering. <br><br></p>",
-    "schedule": {}
+    "schedule": {
+      "ohio": {
+        "date": "2026-04-09",
+        "day": "Thursday",
+        "startTime": "17:30",
+        "endTime": "18:30",
+        "room": "Queen City D"
+      }
+    }
   },
   {
     "id": "856927",
@@ -5973,7 +6061,15 @@
       "texas"
     ],
     "description": "<blockquote>Two Russians, two Englishmen, two Frenchmen, three Americans, a South African, and a Norwegian walk into a bar... Not really. But they do come together in this list of the greatest Christian literary works of the last two centuries. It is a list that includes two Learn why these books are great and how it can be that, as someone once said, the worst Christians write the best Christian books. Learn which are the best translations and why it is okay to listen, rather than actually read them (along with who are the best readers).</blockquote>\n<p><br></p>",
-    "schedule": {}
+    "schedule": {
+      "ohio": {
+        "date": "2026-04-10",
+        "day": "Friday",
+        "startTime": "10:00",
+        "endTime": "11:00",
+        "room": "Room 230 DEF"
+      }
+    }
   },
   {
     "id": "895740",
@@ -6174,7 +6270,15 @@
       "texas"
     ],
     "description": "<p>Of course we want to raise honorable, kind humans who are able to show others that they are valued but parents, this requires very purposeful parenting.  I guarantee that your mind and heart will be transformed in this workshop and you will have a new perspective on how important these simple lessons for your children are.  Really, don't miss this!  You will learn how to raise true ladies and gentlemen.</p>",
-    "schedule": {}
+    "schedule": {
+      "ohio": {
+        "date": "2026-04-10",
+        "day": "Friday",
+        "startTime": "10:00",
+        "endTime": "11:00",
+        "room": "Room 230G"
+      }
+    }
   },
   {
     "id": "291686",

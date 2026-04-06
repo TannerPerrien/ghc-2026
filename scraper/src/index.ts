@@ -226,7 +226,6 @@ async function main() {
       locationSlugs: detail.locationSlugs,
       trackSlugs: detail.trackSlugs,
       workshopSlugs: detail.workshopSlugs,
-      sponsor: detail.sponsor,
     };
     speakers.push(speaker);
   }

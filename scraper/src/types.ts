@@ -14,11 +14,6 @@ export interface Track {
   name: string;
 }
 
-export interface Sponsor {
-  name: string;
-  url: string;
-}
-
 export interface Speaker {
   slug: string;
   name: string;
@@ -29,7 +24,6 @@ export interface Speaker {
   locationSlugs: string[];
   trackSlugs: string[];
   workshopSlugs: string[];
-  sponsor: Sponsor | null;
 }
 
 export interface ScheduleEntry {
