@@ -19,7 +19,7 @@ export function decodeSchedule(encoded: string): SharedSchedule {
 export function buildShareUrl(
   locationSlug: string,
   encoded: string,
-  base = window.location.origin
+  base = window.location.origin + import.meta.env.BASE_URL
 ): string {
-  return `${base}/${locationSlug}?schedule=${encoded}`;
+  return `${base}${locationSlug}?schedule=${encoded}`;
 }
