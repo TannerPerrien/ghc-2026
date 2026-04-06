@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
 import type { Route } from "./+types/my-schedule";
-import { getLocation, getWorkshopTimeSlots, getWorkshopsForLocation } from "~/lib/data";
+import { getLocation, getSpeakersForLocation, getWorkshopTimeSlots, getWorkshopsForLocation } from "~/lib/data";
 import { useSchedule } from "~/contexts/schedule-context";
+import { WorkshopModalProvider, useWorkshopModal } from "~/contexts/workshop-modal-context";
 import { TrackBadge } from "~/components/track-badge";
 import { Button } from "~/components/ui/button";
 import { ArrowUp, Printer } from "lucide-react";
@@ -15,7 +16,8 @@ export function loader({ params }: Route.LoaderArgs) {
   const location = getLocation(params.location);
   const timeSlots = getWorkshopTimeSlots(params.location);
   const allWorkshops = getWorkshopsForLocation(params.location);
-  return { location, timeSlots, allWorkshops };
+  const speakers = getSpeakersForLocation(params.location);
+  return { location, timeSlots, allWorkshops, speakers };
 }
 
 function formatTime(time: string): string {
@@ -42,8 +44,19 @@ function getWorkshopsForSlot(
 }
 
 export default function MySchedulePage({ loaderData }: Route.ComponentProps) {
+  const { location, allWorkshops, speakers } = loaderData;
+
+  return (
+    <WorkshopModalProvider locationSlug={location.slug} allWorkshops={allWorkshops} speakers={speakers}>
+      <MySchedulePageInner loaderData={loaderData} />
+    </WorkshopModalProvider>
+  );
+}
+
+function MySchedulePageInner({ loaderData }: { loaderData: Route.ComponentProps["loaderData"] }) {
   const { location, timeSlots, allWorkshops } = loaderData;
   const { selections, promoteToPrimary } = useSchedule();
+  const { openWorkshopModal, openSpeakerModal } = useWorkshopModal();
 
   const scrolledRef = useRef(false);
 
@@ -130,9 +143,21 @@ export default function MySchedulePage({ loaderData }: Route.ComponentProps) {
                         {primary.trackSlug && (
                           <TrackBadge trackSlug={primary.trackSlug} size="sm" className="mb-1.5" />
                         )}
-                        <div className="font-medium leading-snug">{primary.title}</div>
+                        <button
+                          onClick={() => openWorkshopModal(primary)}
+                          className="font-medium leading-snug hover:underline text-left"
+                        >
+                          {primary.title}
+                        </button>
                         <div className="text-sm text-muted-foreground mt-1 flex flex-wrap gap-x-3">
-                          {primary.speakerName && <span>{primary.speakerName}</span>}
+                          {primary.speakerName && (
+                            <button
+                              onClick={() => openSpeakerModal(primary.speakerSlug)}
+                              className="hover:underline"
+                            >
+                              {primary.speakerName}
+                            </button>
+                          )}
                           <span>{primary.scheduleEntry.room}</span>
                         </div>
                       </div>
@@ -154,9 +179,21 @@ export default function MySchedulePage({ loaderData }: Route.ComponentProps) {
                               <ArrowUp className="size-3.5" />
                             </Button>
                             <div className="text-sm text-muted-foreground">
-                              <div className="leading-snug">{w.title}</div>
+                              <button
+                                onClick={() => openWorkshopModal(w)}
+                                className="leading-snug hover:underline text-left"
+                              >
+                                {w.title}
+                              </button>
                               <div className="text-xs text-muted-foreground/70 mt-0.5 flex flex-wrap gap-x-3">
-                                {w.speakerName && <span>{w.speakerName}</span>}
+                                {w.speakerName && (
+                                  <button
+                                    onClick={() => openSpeakerModal(w.speakerSlug)}
+                                    className="hover:underline"
+                                  >
+                                    {w.speakerName}
+                                  </button>
+                                )}
                                 <span>{w.scheduleEntry.room}</span>
                               </div>
                             </div>

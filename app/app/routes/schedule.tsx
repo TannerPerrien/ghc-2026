@@ -10,19 +10,18 @@ import {
   getWorkshopsForLocation,
 } from "~/lib/data";
 import { useSchedule } from "~/contexts/schedule-context";
+import { WorkshopModalProvider, useWorkshopModal } from "~/contexts/workshop-modal-context";
 import { decodeSchedule } from "~/lib/sharing";
 import { FilterSidebar } from "~/components/filter-sidebar";
 import { WorkshopCard } from "~/components/workshop-card";
 import { ScheduleSlot, slotAnchorId } from "~/components/schedule-slot";
-import { WorkshopDetailModal } from "~/components/workshop-detail-modal";
-import { SpeakerDetailModal } from "~/components/speaker-detail-modal";
 import { ShareButton } from "~/components/share-button";
 import { ResetMenu } from "~/components/reset-menu";
 import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "~/components/ui/sheet";
 import { Button } from "~/components/ui/button";
 import { ImportScheduleDialog } from "~/components/import-schedule-dialog";
 import { CalendarDays, SlidersHorizontal, X } from "lucide-react";
-import type { FilterState, SharedSchedule, Speaker, WorkshopWithSchedule } from "~/lib/types";
+import type { FilterState, SharedSchedule, WorkshopWithSchedule } from "~/lib/types";
 
 export function meta({ data }: Route.MetaArgs) {
   return [{ title: `GHC 2026 — ${data?.location.name ?? "Schedule"}` }];
@@ -67,6 +66,16 @@ function formatTime(time: string): string {
 }
 
 export default function SchedulePage({ loaderData }: Route.ComponentProps) {
+  const { location, allWorkshops, speakers } = loaderData;
+
+  return (
+    <WorkshopModalProvider locationSlug={location.slug} allWorkshops={allWorkshops} speakers={speakers}>
+      <SchedulePageInner loaderData={loaderData} />
+    </WorkshopModalProvider>
+  );
+}
+
+function SchedulePageInner({ loaderData }: { loaderData: Route.ComponentProps["loaderData"] }) {
   const { location, timeSlots, tracks, speakers, rooms, allWorkshops } = loaderData;
   const {
     userId,
@@ -77,15 +86,12 @@ export default function SchedulePage({ loaderData }: Route.ComponentProps) {
     clearSchedule,
     importSchedule,
   } = useSchedule();
+  const { openWorkshopModal, openSpeakerModal } = useWorkshopModal();
 
   const navigate = useNavigate();
   const [filters, setFilters] = useState<FilterState>(defaultFilters);
   const [scheduleSheetOpen, setScheduleSheetOpen] = useState(false);
   const [pendingShare, setPendingShare] = useState<SharedSchedule | null>(null);
-
-  // Modal state
-  const [workshopModal, setWorkshopModal] = useState<WorkshopWithSchedule | null>(null);
-  const [speakerModal, setSpeakerModal] = useState<Speaker | null>(null);
 
   // Detect ?schedule= query param on mount (deferred until after HYDRATE)
   useEffect(() => {
@@ -162,18 +168,6 @@ export default function SchedulePage({ loaderData }: Route.ComponentProps) {
     return keys;
   }, [timeSlots, filters, hasActiveFilters]);
 
-  // Helper: get workshops for the modal's speaker
-  const speakerModalWorkshops = useMemo(() => {
-    if (!speakerModal) return [];
-    return allWorkshops.filter((w) => w.speakerSlug === speakerModal.slug);
-  }, [speakerModal, allWorkshops]);
-
-  function openSpeakerModal(speakerSlug: string | null | undefined) {
-    if (!speakerSlug) return;
-    const speaker = speakers.find((s) => s.slug === speakerSlug);
-    if (speaker) setSpeakerModal(speaker);
-  }
-
   // Resolve selections for a given slot
   function getSlotWorkshops(slotKey: string) {
     const slotSelections = selections[slotKey] ?? [];
@@ -191,11 +185,6 @@ export default function SchedulePage({ loaderData }: Route.ComponentProps) {
         .filter(Boolean) as WorkshopWithSchedule[],
     };
   }
-
-  // Workshop modal's current selection state
-  const workshopModalSelection = workshopModal
-    ? selectionMap.get(workshopModal.id) ?? null
-    : null;
 
   const filterSidebar = (
     <FilterSidebar
@@ -248,7 +237,7 @@ export default function SchedulePage({ loaderData }: Route.ComponentProps) {
               onSlotHeaderClick={onClose}
               onPromoteToPrimary={(workshopId) => promoteToPrimary(slot.key, workshopId)}
               onRemove={(workshopId) => removeWorkshop(slot.key, workshopId)}
-              onClickWorkshop={setWorkshopModal}
+              onClickWorkshop={openWorkshopModal}
             />
           );
         })}
@@ -368,7 +357,7 @@ export default function SchedulePage({ loaderData }: Route.ComponentProps) {
                             selectWorkshop(slot.key, w.id, hasPrimary ? "secondary" : "primary");
                           }}
                           onRemove={() => removeWorkshop(sel!.slotKey, w.id)}
-                          onClickTitle={() => setWorkshopModal(w)}
+                          onClickTitle={() => openWorkshopModal(w)}
                           onClickSpeaker={() => openSpeakerModal(w.speakerSlug)}
                         />
                       );
@@ -386,42 +375,6 @@ export default function SchedulePage({ loaderData }: Route.ComponentProps) {
           {renderScheduleSidebar()}
         </aside>
       </div>
-
-      {/* Workshop detail modal */}
-      <WorkshopDetailModal
-        locationSlug={location.slug}
-        workshop={workshopModal}
-        selectionType={workshopModalSelection?.type ?? null}
-        onClose={() => setWorkshopModal(null)}
-        onAdd={() => {
-          if (!workshopModal) return;
-          const slotKey = timeSlots.find((s) => s.workshops.some((w) => w.id === workshopModal.id))?.key ?? "";
-          const hasPrimary = (selections[slotKey] ?? []).some((s) => s.type === "primary");
-          selectWorkshop(slotKey, workshopModal.id, hasPrimary ? "secondary" : "primary");
-        }}
-        onRemove={() =>
-          workshopModal && workshopModalSelection &&
-          removeWorkshop(workshopModalSelection.slotKey, workshopModal.id)
-        }
-        onClickSpeaker={() => {
-          if (workshopModal?.speakerSlug) {
-            openSpeakerModal(workshopModal.speakerSlug);
-            setWorkshopModal(null);
-          }
-        }}
-      />
-
-      {/* Speaker detail modal */}
-      <SpeakerDetailModal
-        locationSlug={location.slug}
-        speaker={speakerModal}
-        speakerWorkshops={speakerModalWorkshops}
-        onClose={() => setSpeakerModal(null)}
-        onClickWorkshop={(w) => {
-          setSpeakerModal(null);
-          setWorkshopModal(w);
-        }}
-      />
 
       <ImportScheduleDialog
         open={!!pendingShare}

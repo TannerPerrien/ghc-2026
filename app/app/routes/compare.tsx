@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { Route } from "./+types/compare";
-import { getLocation, getWorkshopTimeSlots, getWorkshopsForLocation } from "~/lib/data";
+import { getLocation, getSpeakersForLocation, getWorkshopTimeSlots, getWorkshopsForLocation } from "~/lib/data";
 import { useSchedule } from "~/contexts/schedule-context";
+import { WorkshopModalProvider, useWorkshopModal } from "~/contexts/workshop-modal-context";
 import { decodeSchedule } from "~/lib/sharing";
 import { TrackBadge } from "~/components/track-badge";
 import { ImportScheduleDialog } from "~/components/import-schedule-dialog";
@@ -24,11 +25,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "~/components/ui/dialog";
-import { Trash2, Link as LinkIcon, ArrowDownToLine, Pencil } from "lucide-react";
+import { Trash2, Link as LinkIcon, ArrowDownToLine, Pencil, Plus } from "lucide-react";
 import { cn } from "~/lib/utils";
 import type { ScheduleSelections, SharedSchedule, WorkshopWithSchedule } from "~/lib/types";
 
-export function meta({ data }: Route.MetaArgs) {
+export function meta() {
   return [{ title: `GHC 2026 — Compare Schedules` }];
 }
 
@@ -36,7 +37,8 @@ export function loader({ params }: Route.LoaderArgs) {
   const location = getLocation(params.location);
   const timeSlots = getWorkshopTimeSlots(params.location);
   const allWorkshops = getWorkshopsForLocation(params.location);
-  return { location, timeSlots, allWorkshops };
+  const speakers = getSpeakersForLocation(params.location);
+  return { location, timeSlots, allWorkshops, speakers };
 }
 
 function formatTime(time: string): string {
@@ -57,8 +59,19 @@ function getPrimaryWorkshop(
 }
 
 export default function ComparePage({ loaderData }: Route.ComponentProps) {
-  const { location, timeSlots, allWorkshops } = loaderData;
-  const { userId, selections, importedSchedules, importSchedule, removeImportedSchedule, adoptSchedule, renameImportedSchedule } = useSchedule();
+  const { location, allWorkshops, speakers } = loaderData;
+
+  return (
+    <WorkshopModalProvider locationSlug={location.slug} allWorkshops={allWorkshops} speakers={speakers}>
+      <ComparePageInner loaderData={loaderData} />
+    </WorkshopModalProvider>
+  );
+}
+
+function ComparePageInner({ loaderData }: { loaderData: Route.ComponentProps["loaderData"] }) {
+  const { timeSlots, allWorkshops } = loaderData;
+  const { userId, selections, selectWorkshop, importedSchedules, importSchedule, removeImportedSchedule, adoptSchedule, renameImportedSchedule } = useSchedule();
+  const { openWorkshopModal, openSpeakerModal } = useWorkshopModal();
 
   const [importInput, setImportInput] = useState("");
   const [importError, setImportError] = useState<string | null>(null);
@@ -66,6 +79,16 @@ export default function ComparePage({ loaderData }: Route.ComponentProps) {
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [renameTargetId, setRenameTargetId] = useState<string | null>(null);
   const [renameValue, setRenameValue] = useState("");
+
+  const selectionMap = useMemo(() => {
+    const map = new Map<string, { slotKey: string; type: "primary" | "secondary" }>();
+    for (const [slotKey, slotSelections] of Object.entries(selections)) {
+      for (const sel of slotSelections) {
+        map.set(sel.workshopId, { slotKey, type: sel.type });
+      }
+    }
+    return map;
+  }, [selections]);
 
   function handleImport() {
     try {
@@ -223,6 +246,7 @@ export default function ComparePage({ loaderData }: Route.ComponentProps) {
                         hasMatch &&
                         w &&
                         workshopsByCol.filter((other) => other?.id === w.id).length > 1;
+                      const notInMySchedule = !col.isOwn && w && !selectionMap.has(w.id);
 
                       return (
                         <td
@@ -238,11 +262,36 @@ export default function ComparePage({ loaderData }: Route.ComponentProps) {
                               {w.trackSlug && (
                                 <TrackBadge trackSlug={w.trackSlug} size="sm" className="mb-1" />
                               )}
-                              <div className="font-medium leading-snug">{w.title}</div>
+                              <button
+                                onClick={() => openWorkshopModal(w)}
+                                className="font-medium leading-snug hover:underline text-left"
+                              >
+                                {w.title}
+                              </button>
                               {w.speakerName && (
-                                <div className="text-muted-foreground mt-0.5">{w.speakerName}</div>
+                                <button
+                                  onClick={() => openSpeakerModal(w.speakerSlug)}
+                                  className="block text-muted-foreground mt-0.5 hover:underline text-left"
+                                >
+                                  {w.speakerName}
+                                </button>
                               )}
                               <div className="text-muted-foreground">{w.scheduleEntry.room}</div>
+                              {notInMySchedule && (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="mt-1.5 h-6 px-2 text-[10px] gap-1"
+                                  onClick={() => {
+                                    const hasPrimary = (selections[slot.key] ?? []).some((s) => s.type === "primary");
+                                    selectWorkshop(slot.key, w.id, hasPrimary ? "secondary" : "primary");
+                                  }}
+                                  title="Add to my schedule"
+                                >
+                                  <Plus className="size-3" />
+                                  Add
+                                </Button>
+                              )}
                             </div>
                           ) : (
                             <span className="text-muted-foreground italic">—</span>
