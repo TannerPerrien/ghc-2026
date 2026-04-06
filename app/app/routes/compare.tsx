@@ -268,7 +268,7 @@ function ComparePageInner({ loaderData }: { loaderData: Route.ComponentProps["lo
                           {w ? (
                             <div>
                               {w.trackSlug && (
-                                <TrackBadge trackSlug={w.trackSlug} size="sm" className="mb-1" />
+                                <><TrackBadge trackSlug={w.trackSlug} size="sm" className="mb-1" />{" "}</>
                               )}
                               <button
                                 onClick={() => openWorkshopModal(w)}
@@ -300,7 +300,7 @@ function ComparePageInner({ loaderData }: { loaderData: Route.ComponentProps["lo
                                 <Button
                                   variant="outline"
                                   size="sm"
-                                  className="mt-1.5 h-6 px-2 text-[10px] gap-1"
+                                  className="mt-1.5 h-6 px-2 text-[10px] gap-1 flex"
                                   onClick={() => {
                                     const hasPrimary = (selections[slot.key] ?? []).some((s) => s.type === "primary");
                                     selectWorkshop(slot.key, w.id, hasPrimary ? "secondary" : "primary");
