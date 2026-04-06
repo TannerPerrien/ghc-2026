@@ -7,6 +7,7 @@ import { TrackBadge } from "~/components/track-badge";
 import { Button } from "~/components/ui/button";
 import { ArrowUp, Printer } from "lucide-react";
 import type { ScheduleSelections, WorkshopWithSchedule } from "~/lib/types";
+import { ShareButton } from "~/components/share-button";
 
 export function meta({ data }: Route.MetaArgs) {
   return [{ title: `GHC 2026 — ${data?.location.name ?? "My Schedule"}` }];
@@ -55,7 +56,7 @@ export default function MySchedulePage({ loaderData }: Route.ComponentProps) {
 
 function MySchedulePageInner({ loaderData }: { loaderData: Route.ComponentProps["loaderData"] }) {
   const { location, timeSlots, allWorkshops } = loaderData;
-  const { selections, promoteToPrimary } = useSchedule();
+  const { userId, selections, promoteToPrimary } = useSchedule();
   const { openWorkshopModal, openSpeakerModal } = useWorkshopModal();
 
   const scrolledRef = useRef(false);
@@ -100,10 +101,13 @@ function MySchedulePageInner({ loaderData }: { loaderData: Route.ComponentProps[
       {/* Screen header */}
       <div className="flex items-center justify-between px-6 py-4 border-b shrink-0 print:hidden">
         <h1 className="font-semibold text-sm">My Schedule</h1>
-        <Button variant="outline" size="sm" onClick={() => window.print()} className="gap-1.5">
-          <Printer className="size-3.5" />
-          Print
-        </Button>
+        <div className="flex items-center gap-2">
+          <ShareButton userId={userId} locationSlug={location.slug} schedule={selections} />
+          <Button variant="outline" size="sm" onClick={() => window.print()} className="gap-1.5">
+            <Printer className="size-3.5" />
+            Print
+          </Button>
+        </div>
       </div>
 
       {/* Print-only heading */}
