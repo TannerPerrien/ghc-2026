@@ -43,6 +43,11 @@ jobs:
         env:
           VITE_BASE_PATH: /${{ github.event.repository.name }}/
 
+      - name: Flatten pre-rendered output
+        run: |
+          cp -r app/build/client/${{ github.event.repository.name }}/. app/build/client/
+          rm -rf app/build/client/${{ github.event.repository.name }}
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: app/build/client
