@@ -57,9 +57,9 @@ export function ScheduleSlot({
             {day} · {formatTime(startTime)}–{formatTime(endTime)}
           </a>
         ) : (
-          <div className="text-xs font-medium text-muted-foreground">
+          <span className="text-xs font-medium text-primary">
             {day} · {formatTime(startTime)}–{formatTime(endTime)}
-          </div>
+          </span>
         )}
       </div>
 
