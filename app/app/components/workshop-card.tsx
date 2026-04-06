@@ -7,7 +7,7 @@ import type { SelectionType, WorkshopWithSchedule } from "~/lib/types";
 interface WorkshopCardProps {
   workshop: WorkshopWithSchedule;
   selectionType: SelectionType | null;
-  speakerAppearsElsewhere: boolean;
+  speakerCount?: number;
   onAdd: () => void;
   onRemove: () => void;
   onClickTitle: () => void;
@@ -17,7 +17,7 @@ interface WorkshopCardProps {
 export function WorkshopCard({
   workshop,
   selectionType,
-  speakerAppearsElsewhere,
+  speakerCount,
   onAdd,
   onRemove,
   onClickTitle,
@@ -57,10 +57,10 @@ export function WorkshopCard({
               </button>
             )}
             <span>{workshop.scheduleEntry.room}</span>
-            {speakerAppearsElsewhere && (
+            {speakerCount !== undefined && speakerCount > 1 && (
               <span className="inline-flex items-center gap-1 text-blue-600">
                 <Users className="size-3" />
-                Speaker in multiple slots
+                In {speakerCount} workshops with speaker
               </span>
             )}
           </div>

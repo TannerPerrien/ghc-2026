@@ -1,13 +1,14 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import type { Route } from "./+types/my-schedule";
 import { getLocation, getSpeakersForLocation, getWorkshopTimeSlots, getWorkshopsForLocation } from "~/lib/data";
 import { useSchedule } from "~/contexts/schedule-context";
 import { WorkshopModalProvider, useWorkshopModal } from "~/contexts/workshop-modal-context";
 import { TrackBadge } from "~/components/track-badge";
 import { Button } from "~/components/ui/button";
-import { ArrowUp, Printer } from "lucide-react";
+import { ArrowUp, Printer, Users } from "lucide-react";
 import type { ScheduleSelections, WorkshopWithSchedule } from "~/lib/types";
 import { ShareButton } from "~/components/share-button";
+import { buildSpeakerCount } from "~/lib/schedule";
 
 export function meta({ data }: Route.MetaArgs) {
   return [{ title: `GHC 2026 — ${data?.location.name ?? "My Schedule"}` }];
@@ -57,6 +58,10 @@ export default function MySchedulePage({ loaderData }: Route.ComponentProps) {
 function MySchedulePageInner({ loaderData }: { loaderData: Route.ComponentProps["loaderData"] }) {
   const { location, timeSlots, allWorkshops } = loaderData;
   const { userId, selections, promoteToPrimary } = useSchedule();
+  const speakerCounts = useMemo(
+    () => buildSpeakerCount(selections, allWorkshops),
+    [selections, allWorkshops]
+  );
   const { openWorkshopModal, openSpeakerModal } = useWorkshopModal();
 
   const scrolledRef = useRef(false);
@@ -163,6 +168,17 @@ function MySchedulePageInner({ loaderData }: { loaderData: Route.ComponentProps[
                             </button>
                           )}
                           <span>{primary.scheduleEntry.room}</span>
+                          {(() => {
+                            const count = primary.speakerSlug
+                              ? (speakerCounts.get(primary.speakerSlug) ?? 0)
+                              : 0;
+                            return count > 1 ? (
+                              <span className="inline-flex items-center gap-1 text-blue-600">
+                                <Users className="size-3" />
+                                In {count} workshops with speaker
+                              </span>
+                            ) : null;
+                          })()}
                         </div>
                       </div>
                     )}
@@ -199,6 +215,17 @@ function MySchedulePageInner({ loaderData }: { loaderData: Route.ComponentProps[
                                   </button>
                                 )}
                                 <span>{w.scheduleEntry.room}</span>
+                                {(() => {
+                                  const count = w.speakerSlug
+                                    ? (speakerCounts.get(w.speakerSlug) ?? 0)
+                                    : 0;
+                                  return count > 1 ? (
+                                    <span className="inline-flex items-center gap-1 text-blue-600">
+                                      <Users className="size-3" />
+                                      In {count} workshops with speaker
+                                    </span>
+                                  ) : null;
+                                })()}
                               </div>
                             </div>
                           </div>

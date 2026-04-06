@@ -25,8 +25,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "~/components/ui/dialog";
-import { Trash2, Link as LinkIcon, ArrowDownToLine, Pencil, Plus } from "lucide-react";
+import { Trash2, Link as LinkIcon, ArrowDownToLine, Pencil, Plus, Users } from "lucide-react";
 import { cn } from "~/lib/utils";
+import { buildSpeakerCount } from "~/lib/schedule";
 import type { ScheduleSelections, SharedSchedule, WorkshopWithSchedule } from "~/lib/types";
 
 export function meta() {
@@ -126,6 +127,12 @@ function ComparePageInner({ loaderData }: { loaderData: Route.ComponentProps["lo
       sharedAt: s.sharedAt,
     })),
   ];
+
+  const columnSpeakerCounts = useMemo(
+    () => columns.map((col) => buildSpeakerCount(col.selections, allWorkshops)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [selections, importedSchedules, allWorkshops]
+  );
 
   return (
     <div className="flex flex-col h-[calc(100vh-57px)] overflow-hidden">
@@ -247,6 +254,7 @@ function ComparePageInner({ loaderData }: { loaderData: Route.ComponentProps["lo
                         w &&
                         workshopsByCol.filter((other) => other?.id === w.id).length > 1;
                       const notInMySchedule = !col.isOwn && w && !selectionMap.has(w.id);
+                      const colSpeakerCounts = columnSpeakerCounts[i];
 
                       return (
                         <td
@@ -277,6 +285,17 @@ function ComparePageInner({ loaderData }: { loaderData: Route.ComponentProps["lo
                                 </button>
                               )}
                               <div className="text-muted-foreground">{w.scheduleEntry.room}</div>
+                              {(() => {
+                                const count = w.speakerSlug
+                                  ? (colSpeakerCounts?.get(w.speakerSlug) ?? 0)
+                                  : 0;
+                                return count > 1 ? (
+                                  <div className="inline-flex items-center gap-1 text-blue-600 mt-0.5">
+                                    <Users className="size-3" />
+                                    In {count} workshops with speaker
+                                  </div>
+                                ) : null;
+                              })()}
                               {notInMySchedule && (
                                 <Button
                                   variant="outline"

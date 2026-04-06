@@ -21,6 +21,7 @@ import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger 
 import { Button } from "~/components/ui/button";
 import { ImportScheduleDialog } from "~/components/import-schedule-dialog";
 import { CalendarDays, SlidersHorizontal, X } from "lucide-react";
+import { buildSpeakerCount } from "~/lib/schedule";
 import type { FilterState, SharedSchedule, WorkshopWithSchedule } from "~/lib/types";
 
 export function meta({ data }: Route.MetaArgs) {
@@ -134,21 +135,11 @@ function SchedulePageInner({ loaderData }: { loaderData: Route.ComponentProps["l
     return map;
   }, [selections]);
 
-  // Build map of speakerSlug -> number of slots they appear in the user's schedule
-  const speakerSlotCount = useMemo(() => {
-    const counts = new Map<string, number>();
-    for (const [, slotSelections] of Object.entries(selections)) {
-      const seenSpeakers = new Set<string>();
-      for (const sel of slotSelections) {
-        const w = allWorkshops.find((w) => w.id === sel.workshopId);
-        if (w?.speakerSlug && !seenSpeakers.has(w.speakerSlug)) {
-          counts.set(w.speakerSlug, (counts.get(w.speakerSlug) ?? 0) + 1);
-          seenSpeakers.add(w.speakerSlug);
-        }
-      }
-    }
-    return counts;
-  }, [selections, allWorkshops]);
+  // Build map of speakerSlug -> number of selected workshops featuring that speaker
+  const speakerCount = useMemo(
+    () => buildSpeakerCount(selections, allWorkshops),
+    [selections, allWorkshops]
+  );
 
   const hasActiveFilters =
     filters.tracks.size > 0 ||
@@ -233,6 +224,7 @@ function SchedulePageInner({ loaderData }: { loaderData: Route.ComponentProps["l
               endTime={slot.endTime}
               primaryWorkshop={primaryWorkshop}
               secondaryWorkshops={secondaryWorkshops}
+              speakerCounts={speakerCount}
               isVisibleInSchedule={visibleSlotKeys.has(slot.key)}
               onSlotHeaderClick={onClose}
               onPromoteToPrimary={(workshopId) => promoteToPrimary(slot.key, workshopId)}
@@ -343,15 +335,13 @@ function SchedulePageInner({ loaderData }: { loaderData: Route.ComponentProps["l
                   <div className="space-y-2">
                     {visibleWorkshops.map((w) => {
                       const sel = selectionMap.get(w.id);
-                      const speakerElsewhere =
-                        !!w.speakerSlug && (speakerSlotCount.get(w.speakerSlug) ?? 0) > 1;
 
                       return (
                         <WorkshopCard
                           key={w.slug}
                           workshop={w}
                           selectionType={sel?.type ?? null}
-                          speakerAppearsElsewhere={speakerElsewhere}
+                          speakerCount={w.speakerSlug ? speakerCount.get(w.speakerSlug) : undefined}
                           onAdd={() => {
                             const hasPrimary = (selections[slot.key] ?? []).some((s) => s.type === "primary");
                             selectWorkshop(slot.key, w.id, hasPrimary ? "secondary" : "primary");

@@ -1,4 +1,4 @@
-import { ArrowUp, Minus } from "lucide-react";
+import { ArrowUp, Minus, Users } from "lucide-react";
 import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
 import { TrackBadge } from "~/components/track-badge";
@@ -11,6 +11,7 @@ interface ScheduleSlotProps {
   endTime: string;
   primaryWorkshop: WorkshopWithSchedule | null;
   secondaryWorkshops: WorkshopWithSchedule[];
+  speakerCounts?: Map<string, number>;
   isVisibleInSchedule?: boolean;
   onSlotHeaderClick?: () => void;
   onPromoteToPrimary: (workshopId: string) => void;
@@ -36,6 +37,7 @@ export function ScheduleSlot({
   endTime,
   primaryWorkshop,
   secondaryWorkshops,
+  speakerCounts,
   isVisibleInSchedule,
   onSlotHeaderClick,
   onPromoteToPrimary,
@@ -92,6 +94,17 @@ export function ScheduleSlot({
                   {primaryWorkshop.trackSlug && (
                     <TrackBadge trackSlug={primaryWorkshop.trackSlug} size="sm" className="mt-1" />
                   )}
+                  {(() => {
+                    const count = primaryWorkshop.speakerSlug
+                      ? (speakerCounts?.get(primaryWorkshop.speakerSlug) ?? 0)
+                      : 0;
+                    return count > 1 ? (
+                      <span className="inline-flex items-center gap-1 text-blue-600 mt-0.5">
+                        <Users className="size-3" />
+                        In {count} workshops with speaker
+                      </span>
+                    ) : null;
+                  })()}
                 </div>
                 <Button
                   variant="ghost"
@@ -121,6 +134,17 @@ export function ScheduleSlot({
                   {w.speakerName && (
                     <div className="text-muted-foreground mt-0.5">{w.speakerName}</div>
                   )}
+                  {(() => {
+                    const count = w.speakerSlug
+                      ? (speakerCounts?.get(w.speakerSlug) ?? 0)
+                      : 0;
+                    return count > 1 ? (
+                      <span className="inline-flex items-center gap-1 text-blue-600 mt-0.5">
+                        <Users className="size-3" />
+                        In {count} workshops with speaker
+                      </span>
+                    ) : null;
+                  })()}
                 </div>
                 <div className="flex items-center gap-0.5 shrink-0">
                   <Button
