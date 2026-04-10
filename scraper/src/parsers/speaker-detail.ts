@@ -80,21 +80,6 @@ export function parseSpeakerDetail(html: string): SpeakerDetail {
     const href = $(el).attr('href') || '';
     if (href.startsWith('http')) website = href;
   });
-  if (!website) {
-    $('p').each((_, el) => {
-      if (website) return;
-      const $el = $(el);
-      if ($el.find('strong').text().trim().toLowerCase() === 'sponsor') {
-        $el.parent().find('a[href]').each((_, a) => {
-          if (website) return;
-          const href = $(a).attr('href') || '';
-          if (href.startsWith('http') && !href.includes('greathomeschoolconventions.com')) {
-            website = href;
-          }
-        });
-      }
-    });
-  }
 
   // Photo — the speaker portrait uses a Craft CMS crop transform
   // Match img with "_crop_center" in src (filters out logo images)
