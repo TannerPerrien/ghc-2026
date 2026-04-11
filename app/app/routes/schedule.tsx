@@ -240,7 +240,7 @@ function SchedulePageInner({ loaderData }: { loaderData: Route.ComponentProps["l
 
   return (
     <>
-      <div className="flex h-[calc(100vh-57px)]">
+      <div className="flex h-full overflow-hidden">
         {/* Left: Filters — desktop only */}
         <aside className="hidden lg:flex w-64 border-r bg-muted/30 p-4 shrink-0 flex-col">
           {filterSidebar}

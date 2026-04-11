@@ -21,7 +21,7 @@ export default function LocationLayout({ loaderData }: Route.ComponentProps) {
   const dateRange = `${start.toLocaleDateString("en-US", { month: "long", day: "numeric" })} – ${end.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}`;
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="h-dvh bg-background flex flex-col overflow-hidden">
       <header className="border-b bg-background sticky top-0 z-10">
         <div className="px-4 py-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4">
           <div className="flex items-center gap-3 min-w-0">
@@ -64,7 +64,7 @@ export default function LocationLayout({ loaderData }: Route.ComponentProps) {
         </div>
       </header>
 
-      <main className="flex-1">
+      <main className="flex-1 min-h-0 overflow-y-auto">
         <ScheduleProvider locationSlug={location.slug}>
           <Outlet />
         </ScheduleProvider>
