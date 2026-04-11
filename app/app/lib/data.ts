@@ -84,12 +84,23 @@ export function getWorkshop(slug: string, locationSlug: string): WorkshopWithSch
   return { ...w, scheduleEntry: w.schedule[locationSlug] };
 }
 
-export function getSpeaker(slug: string, locationSlug: string): Speaker {
-  const s = speakers.find(
-    (s) => s.slug === slug && s.locationSlugs.includes(locationSlug)
-  );
+export function getSpeaker(slug: string): Speaker {
+  const s = speakers.find((s) => s.slug === slug);
   if (!s) throw new Response("Speaker not found", { status: 404 });
   return s;
+}
+
+export function getWorkshopsForSpeaker(speakerSlug: string): Array<WorkshopWithSchedule & { locationSlug: string }> {
+  const result: Array<WorkshopWithSchedule & { locationSlug: string }> = [];
+  for (const w of workshops) {
+    if (w.speakerSlug !== speakerSlug) continue;
+    for (const loc of w.locationSlugs) {
+      if (w.schedule[loc]) {
+        result.push({ ...w, scheduleEntry: w.schedule[loc], locationSlug: loc });
+      }
+    }
+  }
+  return result;
 }
 
 export function getTrack(slug: string): Track | undefined {

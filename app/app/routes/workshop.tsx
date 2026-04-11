@@ -11,7 +11,7 @@ export function meta({ data }: Route.MetaArgs) {
 
 export function loader({ params }: Route.LoaderArgs) {
   const workshop = getWorkshop(params.workshop, params.location);
-  const speaker = workshop.speakerSlug ? getSpeaker(workshop.speakerSlug, params.location) : null;
+  const speaker = workshop.speakerSlug ? getSpeaker(workshop.speakerSlug) : null;
   const track = workshop.trackSlug ? getTrack(workshop.trackSlug) : null;
   return { workshop, speaker, track };
 }
@@ -47,7 +47,7 @@ export default function WorkshopPage({ loaderData, params }: Route.ComponentProp
               <div>
                 <div className="text-sm text-muted-foreground">Speaker</div>
                 <Link
-                  to={`/${params.location}/speakers/${speaker.slug}`}
+                  to={`/speakers/${speaker.slug}`}
                   className="font-medium hover:underline"
                 >
                   {speaker.name}
@@ -57,7 +57,7 @@ export default function WorkshopPage({ loaderData, params }: Route.ComponentProp
                 )}
               </div>
               <Button variant="outline" size="sm" asChild>
-                <Link to={`/${params.location}/speakers/${speaker.slug}`}>View Speaker</Link>
+                <Link to={`/speakers/${speaker.slug}`}>View Speaker</Link>
               </Button>
             </div>
           </>

@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/speaker";
-import { getSpeaker, getWorkshopsForLocation, getTrack } from "~/lib/data";
+import { getSpeaker, getWorkshopsForSpeaker, getLocation, getLocations, getTrack } from "~/lib/data";
 import { Badge } from "~/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Separator } from "~/components/ui/separator";
@@ -13,14 +13,21 @@ export function meta({ data }: Route.MetaArgs) {
 }
 
 export function loader({ params }: Route.LoaderArgs) {
-  const speaker = getSpeaker(params.speaker, params.location);
-  const allWorkshops = getWorkshopsForLocation(params.location);
-  const speakerWorkshops = allWorkshops.filter((w) => w.speakerSlug === speaker.slug);
-  return { speaker, speakerWorkshops };
+  const speaker = getSpeaker(params.speaker);
+  const validLocationSlugs = new Set(getLocations().map((l) => l.slug));
+  const allWorkshops = getWorkshopsForSpeaker(speaker.slug);
+  const locationWorkshops = speaker.locationSlugs
+    .filter((locSlug) => validLocationSlugs.has(locSlug))
+    .map((locSlug) => ({
+      location: getLocation(locSlug),
+      workshops: allWorkshops.filter((w) => w.locationSlug === locSlug),
+    }))
+    .filter((g) => g.workshops.length > 0);
+  return { speaker, locationWorkshops };
 }
 
-export default function SpeakerPage({ loaderData, params }: Route.ComponentProps) {
-  const { speaker, speakerWorkshops } = loaderData;
+export default function SpeakerPage({ loaderData }: Route.ComponentProps) {
+  const { speaker, locationWorkshops } = loaderData;
 
   const initials = speaker.name
     .split(" ")
@@ -36,8 +43,8 @@ export default function SpeakerPage({ loaderData, params }: Route.ComponentProps
   return (
     <div className="container mx-auto px-4 py-8 max-w-3xl">
       <div className="mb-6">
-        <Link to={`/${params.location}`} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-          ← Back to Schedule
+        <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+          ← All Locations
         </Link>
       </div>
 
@@ -77,19 +84,19 @@ export default function SpeakerPage({ loaderData, params }: Route.ComponentProps
           </>
         )}
 
-        {/* Workshops */}
-        {speakerWorkshops.length > 0 && (
-          <>
+        {/* Workshops grouped by location */}
+        {locationWorkshops.map(({ location, workshops }) => (
+          <div key={location.slug}>
             <Separator />
             <div>
               <h2 className="font-semibold mb-3">
-                Sessions at {params.location.charAt(0).toUpperCase() + params.location.slice(1)} ({speakerWorkshops.length})
+                Sessions at {location.name} ({workshops.length})
               </h2>
               <div className="grid gap-3">
-                {speakerWorkshops.map((w) => {
+                {workshops.map((w) => {
                   const track = w.trackSlug ? getTrack(w.trackSlug) : undefined;
                   return (
-                    <Link key={w.slug} to={`/${params.location}/workshops/${w.slug}`}>
+                    <Link key={`${w.slug}-${location.slug}`} to={`/${location.slug}/workshops/${w.slug}`}>
                       <Card className="hover:bg-accent/50 transition-colors">
                         <CardContent className="py-3">
                           <div className="flex items-start justify-between gap-2">
@@ -112,8 +119,8 @@ export default function SpeakerPage({ loaderData, params }: Route.ComponentProps
                 })}
               </div>
             </div>
-          </>
-        )}
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -14,7 +14,6 @@ import type { Speaker, WorkshopWithSchedule } from "~/lib/types";
 import { SPEAKER_PHOTO_BASE_URL } from "~/lib/data";
 
 interface SpeakerDetailModalProps {
-  locationSlug: string;
   speaker: Speaker | null;
   speakerWorkshops: WorkshopWithSchedule[];
   onClose: () => void;
@@ -29,7 +28,6 @@ function formatTime(time: string): string {
 }
 
 export function SpeakerDetailModal({
-  locationSlug,
   speaker,
   speakerWorkshops,
   onClose,
@@ -60,7 +58,7 @@ export function SpeakerDetailModal({
             <div className="min-w-0">
               <DialogTitle className="text-lg">
                 <Link
-                  to={`/${locationSlug}/speakers/${speaker.slug}`}
+                  to={`/speakers/${speaker.slug}`}
                   className="hover:underline inline-flex items-center gap-1.5"
                   onClick={onClose}
                 >

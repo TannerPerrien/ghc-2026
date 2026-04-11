@@ -88,7 +88,6 @@ export function WorkshopModalProvider({
       />
 
       <SpeakerDetailModal
-        locationSlug={locationSlug}
         speaker={speakerModal}
         speakerWorkshops={speakerModalWorkshops}
         onClose={() => setSpeakerModal(null)}

@@ -24,11 +24,10 @@ export default {
         }
       }
 
-      for (const s of speakers) {
-        if (s.locationSlugs.includes(loc.slug)) {
-          routes.push(`/${loc.slug}/speakers/${s.slug}`);
-        }
-      }
+    }
+
+    for (const s of speakers) {
+      routes.push(`/speakers/${s.slug}`);
     }
 
     return routes;
