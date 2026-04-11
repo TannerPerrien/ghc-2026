@@ -306,6 +306,16 @@ function SchedulePageInner({ loaderData }: { loaderData: Route.ComponentProps["l
           {/* Scrollable workshop list */}
           <div className="flex-1 overflow-y-auto px-4 pb-4">
           <div className="space-y-6 pt-2">
+            {timeSlots.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-24 text-center">
+                <CalendarDays className="size-10 text-muted-foreground/40 mb-4" />
+                <p className="font-medium">Schedule coming soon</p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  The {location.name} schedule hasn't been published yet. Check back later.
+                </p>
+              </div>
+            ) : (
+            <>
             {hasActiveFilters && !timeSlots.some((slot) =>
               slot.workshops.some((w) => workshopMatchesFilters(w, filters))
             ) && (
@@ -356,6 +366,8 @@ function SchedulePageInner({ loaderData }: { loaderData: Route.ComponentProps["l
                 </div>
               );
             })}
+            </>
+            )}
           </div>
           </div>
         </div>

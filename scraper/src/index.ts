@@ -7,11 +7,93 @@ import { parseSpeakerList } from './parsers/speaker-list';
 import { parseSpeakerDetail } from './parsers/speaker-detail';
 import { parseWorkshopDetail } from './parsers/workshop-detail';
 import { parseScheduleCsv, matchWorkshopRows } from './parsers/schedule-csv';
-import { Location, Track, Speaker, Workshop, GhcEvent, WorkshopStub, SpeakerStub } from './types';
+import { Location, Track, Speaker, Workshop, GhcEvent, WorkshopStub, SpeakerStub, ScheduleEntry } from './types';
 
 const DATA_DIR = path.join(__dirname, '../../data');
-const CSV_PATH = path.join(__dirname, '../../2026 OH Program Guide - Sheet1.csv');
 const CONCURRENCY = 5;
+
+interface LocationConfig {
+  slug: string;
+  name: string;
+  abbreviation: string;
+  venue: string;
+  city: string;
+  address: string;
+  dates: { start: string; end: string };
+  year: number;
+  apiPath: string;
+  speakerListPath: string;
+  csvFilename: string | null;
+  csvDayMap: Record<string, { date: string; day: string }>;
+  csvKnownRooms: Set<string>;
+  csvEventRooms: Set<string>;
+}
+
+const LOCATION_CONFIGS: LocationConfig[] = [
+  {
+    slug: 'ohio',
+    name: 'Ohio',
+    abbreviation: 'OH',
+    venue: 'First Financial Center',
+    city: 'Cincinnati',
+    address: '525 Elm St, Cincinnati, OH 45202',
+    dates: { start: '2026-04-09', end: '2026-04-11' },
+    year: 2026,
+    apiPath: '/api/workshops-ohio.json',
+    speakerListPath: '/locations/ohio/speakers',
+    csvFilename: '2026 OH Program Guide - Sheet1.csv',
+    csvDayMap: {
+      'april 9': { date: '2026-04-09', day: 'Thursday' },
+      'april 10': { date: '2026-04-10', day: 'Friday' },
+      'april 11': { date: '2026-04-11', day: 'Saturday' },
+    },
+    csvKnownRooms: new Set([
+      'Cincinnatus A', 'Cincinnatus B',
+      'Room 230 ABC', 'Room 230 DEF', 'Room 230G', 'Room 230 H J',
+      'Queen City A', 'Queen City B', 'Queen City C', 'Queen City D',
+      'Room 201 ABC', 'Room 201D',
+      'Room 210 ABC',
+      'Room 221 AB',
+      'Room 205 AB',
+      'Room 211AB',
+      'Room 232', 'Room 231', 'Room 204',
+      'Ballroom', 'Room 310',
+    ]),
+    csvEventRooms: new Set(['Ballroom', 'Room 310']),
+  },
+  {
+    slug: 'texas',
+    name: 'Texas',
+    abbreviation: 'TX',
+    venue: 'Kalahari Resorts & Conventions Center',
+    city: 'Round Rock',
+    address: '3001 Kalahari Blvd, Round Rock, TX 78665',
+    dates: { start: '2026-07-09', end: '2026-07-11' },
+    year: 2026,
+    apiPath: '/api/workshops-texas.json',
+    speakerListPath: '/locations/texas/speakers',
+    csvFilename: null,
+    csvDayMap: {},
+    csvKnownRooms: new Set(),
+    csvEventRooms: new Set(),
+  },
+  {
+    slug: 'california',
+    name: 'California',
+    abbreviation: 'CA',
+    venue: 'Ontario Convention Center',
+    city: 'Ontario',
+    address: '2000 E Convention Center Way, Ontario, CA 91764',
+    dates: { start: '2026-06-18', end: '2026-06-20' },
+    year: 2026,
+    apiPath: '/api/workshops-california.json',
+    speakerListPath: '/locations/california/speakers',
+    csvFilename: null,
+    csvDayMap: {},
+    csvKnownRooms: new Set(),
+    csvEventRooms: new Set(),
+  },
+];
 
 // Track name → slug mapping
 const TRACK_NAME_TO_SLUG: Record<string, string> = {
@@ -46,15 +128,27 @@ async function main() {
   fs.mkdirSync(DATA_DIR, { recursive: true });
 
   console.log('\n=== Phase 1: Workshop API ===');
-  const apiData = await fetchJson<{ data: any[] }>('/api/workshops-ohio.json');
-  const workshopStubs = parseWorkshopApi(apiData);
-  console.log(`  ${workshopStubs.length} workshops parsed`);
-
-  // Build deduped workshop map by id
   const workshopMap = new Map<string, WorkshopStub>();
-  for (const stub of workshopStubs) {
-    if (!workshopMap.has(stub.id)) workshopMap.set(stub.id, stub);
+  // Track which location APIs each workshop was found in (for fallback locationSlugs)
+  const workshopSourceLocations = new Map<string, string[]>();
+
+  for (const loc of LOCATION_CONFIGS) {
+    console.log(`  Fetching ${loc.apiPath}...`);
+    try {
+      const apiData = await fetchJson<{ data: any[] }>(loc.apiPath);
+      const stubs = parseWorkshopApi(apiData);
+      console.log(`  ${stubs.length} workshops from ${loc.name}`);
+      for (const stub of stubs) {
+        if (!workshopMap.has(stub.id)) workshopMap.set(stub.id, stub);
+        const sources = workshopSourceLocations.get(stub.id) ?? [];
+        sources.push(loc.slug);
+        workshopSourceLocations.set(stub.id, sources);
+      }
+    } catch (err) {
+      console.warn(`  WARN: Failed to fetch ${loc.apiPath}: ${err}`);
+    }
   }
+  console.log(`  ${workshopMap.size} unique workshops total`);
 
   // Collect all speaker slugs mentioned in workshops
   const speakerSlugsFromApi = new Set<string>(
@@ -64,15 +158,22 @@ async function main() {
   );
 
   console.log('\n=== Phase 2: Speaker Listing ===');
-  const speakerListHtml = await fetchText('/locations/ohio/speakers');
-  const speakerListStubs = parseSpeakerList(speakerListHtml);
-  console.log(`  ${speakerListStubs.length} speakers found on listing page`);
-
-  // Merge speaker stubs: listing page + API
   const speakerStubMap = new Map<string, SpeakerStub>();
-  for (const stub of speakerListStubs) {
-    speakerStubMap.set(stub.slug, stub);
+
+  for (const loc of LOCATION_CONFIGS) {
+    console.log(`  Fetching ${loc.speakerListPath}...`);
+    try {
+      const html = await fetchText(loc.speakerListPath);
+      const stubs = parseSpeakerList(html);
+      console.log(`  ${stubs.length} speakers from ${loc.name}`);
+      for (const stub of stubs) {
+        if (!speakerStubMap.has(stub.slug)) speakerStubMap.set(stub.slug, stub);
+      }
+    } catch (err) {
+      console.warn(`  WARN: Failed to fetch ${loc.speakerListPath}: ${err}`);
+    }
   }
+
   // Add any speaker slugs from the API that aren't in the listing
   for (const slug of speakerSlugsFromApi) {
     if (!speakerStubMap.has(slug)) {
@@ -113,38 +214,55 @@ async function main() {
   );
   console.log(`  ${workshopDetailMap.size} workshop detail pages processed`);
 
-  console.log('\n=== Phase 5: Parse Schedule CSV ===');
-  const { workshopRows, events: csvEvents } = parseScheduleCsv(CSV_PATH);
-  console.log(`  ${workshopRows.length} workshop rows in CSV`);
-  console.log(`  ${csvEvents.length} event rows in CSV`);
+  console.log('\n=== Phase 5: Parse Schedule CSVs ===');
+  // scheduleByLocation: locationSlug → (workshopSlug → ScheduleEntry)
+  const scheduleByLocation = new Map<string, Map<string, ScheduleEntry>>();
+  const allEvents: GhcEvent[] = [];
 
-  const { matched, unmatched } = matchWorkshopRows(
-    workshopRows,
-    new Map(Array.from(workshopMap.values()).map(w => [w.slug, { id: w.id, slug: w.slug, title: w.title }]))
+  // Build slug lookup for matchWorkshopRows
+  const workshopsBySlug = new Map(
+    Array.from(workshopMap.values()).map(w => [w.slug, { id: w.id, slug: w.slug, title: w.title }])
   );
-  console.log(`  ${matched.length} CSV rows matched to workshops`);
-  if (unmatched.length > 0) {
-    console.warn(`  WARN: ${unmatched.length} CSV rows could not be matched:`);
-    for (const row of unmatched) {
-      console.warn(`    - "${row.title}" by ${row.speakerRaw}`);
+
+  for (const loc of LOCATION_CONFIGS) {
+    if (!loc.csvFilename) continue;
+    const csvPath = path.join(__dirname, '../../', loc.csvFilename);
+    if (!fs.existsSync(csvPath)) {
+      console.warn(`  WARN: CSV not found for ${loc.name} (${loc.csvFilename}), skipping schedule`);
+      continue;
     }
+
+    console.log(`  Parsing ${loc.csvFilename}...`);
+    const { workshopRows, events } = parseScheduleCsv(
+      csvPath,
+      loc.slug,
+      loc.csvDayMap,
+      loc.csvKnownRooms,
+      loc.csvEventRooms,
+    );
+    console.log(`  ${workshopRows.length} workshop rows, ${events.length} event rows from ${loc.name}`);
+    allEvents.push(...events);
+
+    const { matched, unmatched } = matchWorkshopRows(workshopRows, workshopsBySlug);
+    console.log(`  ${matched.length} CSV rows matched to workshops`);
+    if (unmatched.length > 0) {
+      console.warn(`  WARN: ${unmatched.length} CSV rows could not be matched (${loc.name}):`);
+      for (const row of unmatched) {
+        console.warn(`    - "${row.title}" by ${row.speakerRaw}`);
+      }
+    }
+
+    const locMap = new Map<string, ScheduleEntry>();
+    for (const m of matched) locMap.set(m.slug, m.entry);
+    scheduleByLocation.set(loc.slug, locMap);
   }
 
   console.log('\n=== Phase 6: Reconciliation & Output ===');
 
-  // Build locations.json
-  const locations: Location[] = [
-    {
-      slug: 'ohio',
-      name: 'Ohio',
-      abbreviation: 'OH',
-      venue: 'First Financial Center',
-      city: 'Cincinnati',
-      address: '525 Elm St, Cincinnati, OH 45202',
-      dates: { start: '2026-04-09', end: '2026-04-11' },
-      year: 2026,
-    },
-  ];
+  // Build locations.json from config
+  const locations: Location[] = LOCATION_CONFIGS.map(({ slug, name, abbreviation, venue, city, address, dates, year }) =>
+    ({ slug, name, abbreviation, venue, city, address, dates, year })
+  );
 
   // Build tracks.json — discover all track names from the API
   const trackNamesFound = new Set<string>();
@@ -176,22 +294,22 @@ async function main() {
   }
   const tracks = Array.from(tracksMap.values()).sort((a, b) => a.slug.localeCompare(b.slug));
 
-  // Build schedule lookup: workshop slug → ScheduleEntry
-  const scheduleBySlug = new Map<string, { date: string; day: string; startTime: string; endTime: string; room: string }>();
-  for (const m of matched) {
-    scheduleBySlug.set(m.slug, m.entry);
-  }
-
   // Build workshops.json
   const workshops: Workshop[] = [];
   for (const stub of workshopMap.values()) {
     const detail = workshopDetailMap.get(stub.slug);
-    const scheduleEntry = scheduleBySlug.get(stub.slug);
 
-    // locationSlugs: prefer detail page (authoritative) over API
+    // locationSlugs: prefer detail page (authoritative); fall back to all API source locations
     const locationSlugs = detail?.locationSlugs.length
       ? detail.locationSlugs
-      : ['ohio']; // fallback: if we scraped it from Ohio API, it's at Ohio
+      : (workshopSourceLocations.get(stub.id) ?? ['ohio']);
+
+    // schedule: collect entries from all location CSVs
+    const schedule: Record<string, ScheduleEntry> = {};
+    for (const [locSlug, locMap] of scheduleByLocation) {
+      const entry = locMap.get(stub.slug);
+      if (entry) schedule[locSlug] = entry;
+    }
 
     const workshop: Workshop = {
       id: stub.id,
@@ -202,7 +320,7 @@ async function main() {
       trackSlug: trackNameToSlug(stub.trackName || '') || null,
       locationSlugs,
       description: detail?.description || null,
-      schedule: scheduleEntry ? { ohio: scheduleEntry } : {},
+      schedule,
     };
     workshops.push(workshop);
   }
@@ -259,8 +377,10 @@ async function main() {
     console.warn(`  WARN: ${missingSpeakers} workshop->speaker references not found in speakers.json`);
   }
 
-  const scheduledCount = workshops.filter(w => Object.keys(w.schedule).length > 0).length;
-  console.log(`  ${scheduledCount}/${workshops.length} workshops have Ohio schedule data`);
+  for (const loc of LOCATION_CONFIGS) {
+    const locScheduled = workshops.filter(w => loc.slug in w.schedule).length;
+    console.log(`  ${locScheduled}/${workshops.length} workshops have ${loc.name} schedule data`);
+  }
 
   // Write output files
   const write = (filename: string, data: unknown) => {
@@ -273,14 +393,14 @@ async function main() {
   write('tracks.json', tracks);
   write('speakers.json', speakers);
   write('workshops.json', workshops);
-  write('events.json', csvEvents);
+  write('events.json', allEvents);
 
   console.log('\n=== Done ===');
   console.log(`  ${locations.length} locations`);
   console.log(`  ${tracks.length} tracks`);
   console.log(`  ${speakers.length} speakers`);
   console.log(`  ${workshops.length} workshops`);
-  console.log(`  ${csvEvents.length} events`);
+  console.log(`  ${allEvents.length} events`);
 }
 
 main().catch(err => {

@@ -2,31 +2,8 @@ import fs from 'fs';
 import { parse } from 'csv-parse/sync';
 import { GhcEvent, ScheduleEntry } from '../types';
 
-const LOCATION_SLUG = 'ohio';
-
-// Day header → date + day name
-const DAY_MAP: Record<string, { date: string; day: string }> = {
-  'april 9': { date: '2026-04-09', day: 'Thursday' },
-  'april 10': { date: '2026-04-10', day: 'Friday' },
-  'april 11': { date: '2026-04-11', day: 'Saturday' },
-};
-
-// Known room names — used to distinguish workshop rows from event rows
-const KNOWN_ROOMS = new Set([
-  'Cincinnatus A', 'Cincinnatus B',
-  'Room 230 ABC', 'Room 230 DEF', 'Room 230G', 'Room 230 H J',
-  'Queen City A', 'Queen City B', 'Queen City C', 'Queen City D',
-  'Room 201 ABC', 'Room 201D',
-  'Room 210 ABC',
-  'Room 221 AB',
-  'Room 205 AB',
-  'Room 211AB',
-  'Room 232', 'Room 231', 'Room 204',
-  'Ballroom', 'Room 310',
-]);
-
 function parseTime12to24(timeStr: string): string {
-  // "2:30 PM" → "14:30", "8:00 AM" → "08:00", "11:30 - 12:30 PM" not handled here
+  // "2:30 PM" → "14:30", "8:00 AM" → "08:00"
   const match = timeStr.trim().match(/^(\d+):(\d+)\s*(AM|PM)$/i);
   if (!match) return timeStr;
   let hours = parseInt(match[1], 10);
@@ -54,7 +31,6 @@ function parseTimeSlot(slotStr: string): { startTime: string; endTime: string } 
   const endTime = `${String(endHour).padStart(2, '0')}:${endMin}`;
 
   // Start time: if start hour (in PM sense) would be AFTER end hour, it must be AM
-  // e.g. "8:00 - 9:30 PM" → start=8 PM = 20:00 which is > 21:30 if end=9:30 PM — wait no, 20 < 21, OK
   // e.g. "11:30 - 12:30 PM" → start=11 PM = 23, end=12 PM = 12 → 23 > 12, so start must be AM
   let startHour = startHourRaw;
   if (period === 'PM' && startHourRaw !== 12) {
@@ -89,7 +65,13 @@ export interface ParsedSchedule {
   events: GhcEvent[];
 }
 
-export function parseScheduleCsv(csvPath: string): ParsedSchedule {
+export function parseScheduleCsv(
+  csvPath: string,
+  locationSlug: string,
+  dayMap: Record<string, { date: string; day: string }>,
+  knownRooms: Set<string>,
+  eventRooms: Set<string> = new Set(),
+): ParsedSchedule {
   const content = fs.readFileSync(csvPath, 'utf-8');
   const rows: string[][] = parse(content, { relax_column_count: true, skip_empty_lines: false });
 
@@ -109,19 +91,20 @@ export function parseScheduleCsv(csvPath: string): ParsedSchedule {
     // Skip completely empty rows
     if (!colA && !colB && !colC) continue;
 
-    // Day header: "April 9, Thursday" / "April 10, Friday" / "April 11, Saturday"
-    const dayMatch = colA.match(/^(April \d+),\s*(Thursday|Friday|Saturday)$/i);
-    if (dayMatch) {
-      const key = dayMatch[1].toLowerCase();
-      const dayInfo = DAY_MAP[key];
-      if (dayInfo) {
+    // Day header: matches any dayMap key as a substring of colA (case-insensitive).
+    // Handles both "April 9, Thursday" (key: "april 9") and "Thursday, July 10, 2025" (key: "july 10").
+    let isDayHeader = false;
+    for (const [key, dayInfo] of Object.entries(dayMap)) {
+      if (colA.toLowerCase().includes(key.toLowerCase())) {
         currentDate = dayInfo.date;
         currentDay = dayInfo.day;
         currentStartTime = '';
         currentEndTime = '';
+        isDayHeader = true;
+        break;
       }
-      continue;
     }
+    if (isDayHeader) continue;
 
     // Time slot header: "2:30 - 3:30 PM"
     const slotMatch = colA.match(/^\d+:\d+\s*-\s*\d+:\d+\s*[AP]M$/i);
@@ -139,7 +122,7 @@ export function parseScheduleCsv(csvPath: string): ParsedSchedule {
     if (singleTimeMatch && colB) {
       events.push({
         title: colB,
-        locationSlug: LOCATION_SLUG,
+        locationSlug,
         date: currentDate,
         day: currentDay,
         startTime: parseTime12to24(singleTimeMatch[1]),
@@ -152,12 +135,12 @@ export function parseScheduleCsv(csvPath: string): ParsedSchedule {
 
     // Workshop row: colA is a known room name
     const normalizedRoom = colA.replace(/\s+/g, ' ');
-    if (KNOWN_ROOMS.has(normalizedRoom)) {
-      // Ballroom and Room 310 are always special events, not workshops
-      if (normalizedRoom === 'Ballroom' || normalizedRoom === 'Room 310') {
+    if (knownRooms.has(normalizedRoom)) {
+      // eventRooms are always special events, not workshops
+      if (eventRooms.has(normalizedRoom)) {
         events.push({
           title: colB,
-          locationSlug: LOCATION_SLUG,
+          locationSlug,
           date: currentDate,
           day: currentDay,
           startTime: currentStartTime,
@@ -186,7 +169,7 @@ export function parseScheduleCsv(csvPath: string): ParsedSchedule {
       if (colB) {
         events.push({
           title: colB,
-          locationSlug: LOCATION_SLUG,
+          locationSlug,
           date: currentDate,
           day: currentDay,
           startTime: currentStartTime,

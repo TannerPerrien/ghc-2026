@@ -1121,6 +1121,36 @@
     }
   },
   {
+    "id": "697004",
+    "slug": "college-prep-101-prepare-your-mind-for-action-by-mastering-the-art-of-note-taking",
+    "title": "College Prep 101: Prepare Your Mind for Action by Mastering the Art of Note-taking",
+    "speakerSlug": "mark-pruitt-aka-captain-college",
+    "speakerName": "Mark Pruitt (AKA - Captain College)",
+    "trackSlug": null,
+    "locationSlugs": [
+      "south-carolina",
+      "missouri",
+      "texas"
+    ],
+    "description": "<p>Let Captain College help transform your academic future forever, whether you are a student or a parent wanting to capture the essence of Life. These extremely practical tips on note-taking will propel your education from a casual learner - like most students, to becoming a Student of Excellence.</p>",
+    "schedule": {}
+  },
+  {
+    "id": "858538",
+    "slug": "college-prep-101-time-management-strategies-so-you-can-have-a-life",
+    "title": "College Prep 101: Time Management Strategies So You Can Have a Life",
+    "speakerSlug": "mark-pruitt-aka-captain-college",
+    "speakerName": "Mark Pruitt (AKA - Captain College)",
+    "trackSlug": null,
+    "locationSlugs": [
+      "south-carolina",
+      "missouri",
+      "texas"
+    ],
+    "description": "<table dir=\"ltr\"><tbody><tr><td rowspan=\"1\" colspan=\"12\">Time management is THE BIGGEST struggle for all students…and adults. Learn practical ways to get more done in less time so you can get your school work completed, turn in AMAZING projects, and thoroughly enjoy your time on campus.</td></tr></tbody></table>",
+    "schedule": {}
+  },
+  {
     "id": "859436",
     "slug": "competing-worldviews-of-environmentalism-and-christianity",
     "title": "Competing Worldviews of Environmentalism and Christianity",
@@ -1845,6 +1875,20 @@
     }
   },
   {
+    "id": "858612",
+    "slug": "fight-the-lion-a-call-to-fathers-for-spiritual-warfare",
+    "title": "Fight the Lion: A Call to Fathers for Spiritual Warfare",
+    "speakerSlug": "trey-williams",
+    "speakerName": "Trey Williams",
+    "trackSlug": null,
+    "locationSlugs": [
+      "south-carolina",
+      "texas"
+    ],
+    "description": "<table dir=\"ltr\"><tbody><tr><td rowspan=\"1\" colspan=\"12\">1st Peter 5:8 reminds us that the enemy prowls around like a roaring lion, seeking whom he may devour. The enemy is targeting our homes, our marriages, and our children. In this urgent and inspiring session, Pastor Trey issues a challenge to fathers: it’s time to stand in the gap, take up spiritual arms, and battle for the souls of your family. It's time to Fight the Lion! <br>Pastor Trey's goal for this session is to deliver a rallying cry before an army of fathers preparing to do spiritual warfare for the sake of their families. With biblical clarity and passionate conviction, Trey will challenge and equip dads to become the spiritual warriors God has called them to be.</td></tr></tbody></table>",
+    "schedule": {}
+  },
+  {
     "id": "712836",
     "slug": "fighting-apathy-teaching-your-teens-to-care",
     "title": "Fighting Apathy: Teaching Your Teens to Care",
@@ -2039,6 +2083,33 @@
         "room": "Room 205 AB"
       }
     }
+  },
+  {
+    "id": "866228",
+    "slug": "fractions-are-your-friends-2",
+    "title": "Fractions Are Your Friends!",
+    "speakerSlug": "dennis-dinoia",
+    "speakerName": "Dennis DiNoia, M.A.Ed.",
+    "trackSlug": null,
+    "locationSlugs": [
+      "texas"
+    ],
+    "description": "<p>We often hear from students and parents that they don’t like fractions. What if fractions were&nbsp;learned in a way that gives the student a way to discover relationships that exist in math&nbsp;making math not only fractions easier, but all math concepts easier? Participants will leave the&nbsp;session understanding the parts of a fraction and the function of each part. Participants will&nbsp;discover the answer to questions like: Why do you need a common denominator when adding<br>fractions? How can you add, subtract, multiply or divide fractions using the same method&nbsp;whether the fraction has, numbers, letters (variables) or both? Participants will learn how to&nbsp;translate common English language used when speaking about fractions into math symbols that&nbsp;make sense and can be applied at any time.</p>",
+    "schedule": {}
+  },
+  {
+    "id": "858623",
+    "slug": "from-discipline-to-discipleship-raising-kids-with-eternity-in-mind",
+    "title": "From Discipline to Discipleship: Raising Kids with Eternity in Mind",
+    "speakerSlug": "trey-williams",
+    "speakerName": "Trey Williams",
+    "trackSlug": null,
+    "locationSlugs": [
+      "south-carolina",
+      "texas"
+    ],
+    "description": "<table dir=\"ltr\"><tbody><tr><td rowspan=\"1\" colspan=\"12\">As Christian children grow, so should the role of their parents. There comes a pivotal point in parenting when the focus must shift—from correcting behavior to cultivating belief. In this powerful session, Pastor Trey helps parents navigate the transition from being the disciplinarian to becoming a disciple-maker. With biblical wisdom and practical tools, he'll equip you to go beyond raising well-mannered teens and start intentionally shaping Christ-following disciples.</td></tr></tbody></table>",
+    "schedule": {}
   },
   {
     "id": "820158",
@@ -3476,6 +3547,21 @@
     }
   },
   {
+    "id": "858843",
+    "slug": "let-me-tell-you-a-story",
+    "title": "Let Me Tell You A Story",
+    "speakerSlug": "tom-fay",
+    "speakerName": "Tom Fay",
+    "trackSlug": null,
+    "locationSlugs": [
+      "south-carolina",
+      "california",
+      "texas"
+    ],
+    "description": "<table dir=\"ltr\"><tbody><tr><td rowspan=\"1\" colspan=\"12\">The ancients learned the art of storytelling as a form of learning. We are losing that art. Homeschoolers should excel in it.</td></tr></tbody></table>",
+    "schedule": {}
+  },
+  {
     "id": "890592",
     "slug": "lets-get-writing",
     "title": "Let's Get Writing!",
@@ -4045,6 +4131,27 @@
     }
   },
   {
+    "id": "420310",
+    "slug": "fractions-are-your-friends",
+    "title": "Prime Numbers - The Gateway to Algebra and Beyond!",
+    "speakerSlug": "dennis-dinoia",
+    "speakerName": "Dennis DiNoia, M.A.Ed.",
+    "trackSlug": null,
+    "locationSlugs": [
+      "texas"
+    ],
+    "description": "<p>This hands-on workshop will show how to use prime numbers to simplify both numerical and algebraic fractions, greatest common factors, least common multiples, simplifying roots and&nbsp;determining patterns in sequences. This workshop is for anyone who is ready for pre-algebra&nbsp;and up to pre-calculus. The workshop is fast paced and fun whether you are a middle school&nbsp;student, high school student or parent. This is a must for parents of younger children preparing&nbsp;for pre-algebra!</p>",
+    "schedule": {
+      "ohio": {
+        "date": "2026-04-10",
+        "day": "Friday",
+        "startTime": "16:00",
+        "endTime": "17:00",
+        "room": "Room 230 DEF"
+      }
+    }
+  },
+  {
     "id": "856051",
     "slug": "prime-numbers-the-gateway-to-algebra-and-beyond-2",
     "title": "Prime Numbers – The Gateway to Algebra and Beyond!",
@@ -4058,15 +4165,7 @@
       "california"
     ],
     "description": "<p>This hands-on workshop will show how to use prime numbers to simplify both numerical and algebraic fractions, greatest common factors, least common multiples, simplifying roots and determining patterns in sequences. This workshop is for anyone who is ready for pre-algebra and up to pre-calculus. The workshop is fast paced and fun whether you are a middle school student, high school student or parent. This is a must for parents of younger children preparing for pre-algebra!</p>",
-    "schedule": {
-      "ohio": {
-        "date": "2026-04-10",
-        "day": "Friday",
-        "startTime": "16:00",
-        "endTime": "17:00",
-        "room": "Room 230 DEF"
-      }
-    }
+    "schedule": {}
   },
   {
     "id": "890392",
@@ -4616,6 +4715,19 @@
       "california"
     ],
     "description": "<p>Join a mini-SAT Boot Camp session. Learn the Mr. D secrets of test taking tips and techniques from his SAT Boot Camp. This workshop will focus on math, the language behind the questions and show participants what they really need to know before taking the math section of the SAT. Find out the words on the test that give tips for how to solve the questions as well learning what formulas you really need to know before the taking the SAT. Students and parents alike<br>will learn how to unravel the questions being asked into something they can solve quickly and easily. These techniques can be used for other testing situations and subject areas as well.</p>",
+    "schedule": {}
+  },
+  {
+    "id": "866258",
+    "slug": "its-not-the-math-its-the-question-that-is-confusing",
+    "title": "SAT Math – It’s Not the Math, It’s the Question that is Confusing!",
+    "speakerSlug": "dennis-dinoia",
+    "speakerName": "Dennis DiNoia, M.A.Ed.",
+    "trackSlug": null,
+    "locationSlugs": [
+      "texas"
+    ],
+    "description": "<p>Join a mini-SAT Boot Camp session. Learn the Mr. D secrets of test taking tips and techniques&nbsp;from his SAT Boot Camp. This workshop will focus on math, the language behind the questions&nbsp;and show participants what they really need to know before taking the math section of the SAT.&nbsp;Find out the words on the test that give tips for how to solve the questions as well learning&nbsp;what formulas you really need to know before the taking the SAT. Students and parents alike<br>will learn how to unravel the questions being asked into something they can solve quickly and&nbsp;easily. These techniques can be used for other testing situations and subject areas as well.</p>",
     "schedule": {
       "ohio": {
         "date": "2026-04-11",
@@ -4830,6 +4942,20 @@
       "ohio"
     ],
     "description": "<p>Do you have old films, VHS tapes, slides that you can not play because you don't have the equipment?  Gail will share things to consider when digitizing old media.  Do it yourself, Gail will explain how to do digitization and give helpful pointers for the \"Do It Yourselfer.\"  Points to consider for sending out your old media and the importance of redundancy.</p>",
+    "schedule": {}
+  },
+  {
+    "id": "859395",
+    "slug": "simplifying-the-photo-video-kids-art-keepsake-overload",
+    "title": "Simplifying the Photo, Video, Kids' Art & Keepsake Overload",
+    "speakerSlug": "amy-storch-teri-storch",
+    "speakerName": "Amy Storch & Teri Storch",
+    "trackSlug": null,
+    "locationSlugs": [
+      "south-carolina",
+      "california"
+    ],
+    "description": "<table dir=\"ltr\"><tbody><tr><td rowspan=\"1\" colspan=\"12\">Overloaded with your, your parents, or your grandparents boxes of photos, outdated media, and keepsakes? How about your own digital photos, homeschool memories, and stories? In this workshop, you'll learn five simple steps to successfully do it yourself or use it as a homeschool learning module! Your kids and family will be enriched by bringing these photos and stories into their lives!</td></tr></tbody></table>",
     "schedule": {
       "ohio": {
         "date": "2026-04-10",
@@ -5714,6 +5840,22 @@
         "room": "Queen City D"
       }
     }
+  },
+  {
+    "id": "858863",
+    "slug": "the-modern-parents-guide-to-raising-resilient-kids",
+    "title": "The Modern Parent's Guide to Raising Resilient Kids",
+    "speakerSlug": "natalie-burns",
+    "speakerName": "Natalie Burns",
+    "trackSlug": null,
+    "locationSlugs": [
+      "south-carolina",
+      "missouri",
+      "california",
+      "texas"
+    ],
+    "description": "<table dir=\"ltr\"><tbody><tr><td rowspan=\"1\" colspan=\"12\">Join this workshop to unpack the surprising truth about resiliency and why our kids don’t need to “toughen up” — they need to feel safe, connected, and understood. You’ll walk away with a simple, modern framework for navigating big feelings, shutdowns, and everyday challenges with calm leadership your child can rely on.</td></tr></tbody></table>",
+    "schedule": {}
   },
   {
     "id": "856927",
@@ -6617,6 +6759,20 @@
         "room": "Room 211AB"
       }
     }
+  },
+  {
+    "id": "598388",
+    "slug": "write-a-novel-change-the-world",
+    "title": "Write a Novel - Change the World",
+    "speakerSlug": "sarah-reid",
+    "speakerName": "Sarah Reid",
+    "trackSlug": null,
+    "locationSlugs": [
+      "south-carolina",
+      "california"
+    ],
+    "description": "<p>A powerful story possesses the unique ability to weave its way into the collective soul of society. By crafting relatable characters, compelling plots, and vibrant settings, authors influence people’s views about themselves and the world they live in. Hollywood knows this is true and so they're spending billions of dollars to send their messages across the globe. It’s time to release the power of story as a force for purpose and earn English Language Arts credit at the same time! In this workshop, author and educator, Sarah Reid, will show parents and students the first step towards wielding a pen and winning hearts—how to write a novel that will change the world.</p>\n<p><br><br></p>",
+    "schedule": {}
   },
   {
     "id": "695085",

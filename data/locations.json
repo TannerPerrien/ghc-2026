@@ -11,5 +11,31 @@
       "end": "2026-04-11"
     },
     "year": 2026
+  },
+  {
+    "slug": "texas",
+    "name": "Texas",
+    "abbreviation": "TX",
+    "venue": "Kalahari Resorts & Conventions Center",
+    "city": "Round Rock",
+    "address": "3001 Kalahari Blvd, Round Rock, TX 78665",
+    "dates": {
+      "start": "2026-07-09",
+      "end": "2026-07-11"
+    },
+    "year": 2026
+  },
+  {
+    "slug": "california",
+    "name": "California",
+    "abbreviation": "CA",
+    "venue": "Ontario Convention Center",
+    "city": "Ontario",
+    "address": "2000 E Convention Center Way, Ontario, CA 91764",
+    "dates": {
+      "start": "2026-06-18",
+      "end": "2026-06-20"
+    },
+    "year": 2026
   }
 ]
