@@ -140,29 +140,9 @@ export function FilterSidebar({
       </div>
 
       <div className="flex-1 flex flex-col min-h-0 divide-y">
-        {/* Tracks */}
-        {tracks.length > 0 && (
-          <div className="flex flex-col min-h-0 max-h-1/3 py-3 first:pt-0">
-            <FilterSection title={`Tracks (${tracks.length})`}>
-              <div className="overflow-y-auto space-y-0.5">
-                {tracks.map((track) => (
-                  <CheckItem
-                    key={track.slug}
-                    id={`filter-track-${track.slug}`}
-                    checked={filters.tracks.has(track.slug)}
-                    onToggle={() => toggleSet(filters.tracks, track.slug, "tracks")}
-                  >
-                    <TrackBadge trackSlug={track.slug} size="sm" />
-                  </CheckItem>
-                ))}
-              </div>
-            </FilterSection>
-          </div>
-        )}
-
         {/* Speakers */}
         {speakers.length > 0 && (
-          <div className="flex-1 flex flex-col min-h-0 py-3">
+          <div className="flex-1 flex flex-col min-h-0 py-3 first:pt-0">
             <FilterSection title={`Speakers (${speakers.length})`}>
               <Input
                 placeholder="Find speaker…"
@@ -186,6 +166,26 @@ export function FilterSidebar({
                 {filteredSpeakers.length === 0 && (
                   <p className="text-xs text-muted-foreground py-1">No speakers found</p>
                 )}
+              </div>
+            </FilterSection>
+          </div>
+        )}
+
+        {/* Tracks */}
+        {tracks.length > 0 && (
+          <div className="flex flex-col min-h-0 max-h-1/3 py-3">
+            <FilterSection title={`Tracks (${tracks.length})`}>
+              <div className="overflow-y-auto space-y-0.5">
+                {tracks.map((track) => (
+                  <CheckItem
+                    key={track.slug}
+                    id={`filter-track-${track.slug}`}
+                    checked={filters.tracks.has(track.slug)}
+                    onToggle={() => toggleSet(filters.tracks, track.slug, "tracks")}
+                  >
+                    <TrackBadge trackSlug={track.slug} size="sm" />
+                  </CheckItem>
+                ))}
               </div>
             </FilterSection>
           </div>
